@@ -29,7 +29,7 @@ public class LoginManager {
         callback.finishedConnection(true);
     }
 
-    public void authFailure() throws Excezption {
+    public void authFailure() throws Exception {
         if (callback == null) throw new Exception("must supply LoginManagerCallback reference");
         callback.finishedConnection(false);
     }

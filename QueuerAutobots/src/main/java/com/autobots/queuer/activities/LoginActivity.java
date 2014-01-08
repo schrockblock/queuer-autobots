@@ -10,26 +10,45 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.os.Build;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ProgressBar;
 
 import com.autobots.queuer.R;
 import com.autobots.queuer.interfaces.LoginManagerCallback;
+import com.autobots.queuer.managers.LoginManager;
 
 public class LoginActivity extends ActionBarActivity implements LoginManagerCallback {
+
+    protected final ProgressBar spin = (ProgressBar)findViewById(R.id.loginProgress);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
+        Button login = (Button)findViewById(R.id.loginButton);
+        final EditText user = (EditText)findViewById(R.id.username);
+        final EditText password = (EditText)findViewById(R.id.password);
+        login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                LoginManager manager = new LoginManager();
+                try {
+                    manager.login(user.getText().toString(), password.getText().toString());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
 
     }
 
-    public void startedConnection() {
-
+    public void startConnection() {
+        spin.setVisibility(View.VISIBLE);
     }
 
     public void finishedConnection(boolean success) {
-
+        spin.setVisibility(View.INVISIBLE);
     }
 
 
@@ -51,22 +70,6 @@ public class LoginActivity extends ActionBarActivity implements LoginManagerCall
                 return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    /**
-     * A placeholder fragment containing a simple view.
-     */
-    public static class PlaceholderFragment extends Fragment {
-
-        public PlaceholderFragment() {
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_login, container, false);
-            return rootView;
-        }
     }
 
 }
