@@ -1,4 +1,4 @@
-package com.autobots.queuer;
+package com.autobots.queuer.activities;
 
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
@@ -11,18 +11,25 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.os.Build;
 
-public class LoginActivity extends ActionBarActivity {
+import com.autobots.queuer.R;
+import com.autobots.queuer.interfaces.LoginManagerCallback;
+
+public class LoginActivity extends ActionBarActivity implements LoginManagerCallback {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, new PlaceholderFragment())
-                    .commit();
-        }
+
+    }
+
+    public void startedConnection() {
+
+    }
+
+    public void finishedConnection(boolean success) {
+
     }
 
 
