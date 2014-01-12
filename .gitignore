@@ -1,5 +1,9 @@
 .gradle
 /local.properties
 /.idea
+<<<<<<< HEAD
 .DS_Store
 *.iml
+=======
+.DS_Store
+>>>>>>> added gitignore
