@@ -7,7 +7,16 @@ import com.autobots.queuer.interfaces.LoginManagerCallback;
  */
 public class LoginManager {
 
+    private static LoginManager ref = new LoginManager();
     private LoginManagerCallback callback;
+
+    private LoginManager() {
+
+    }
+
+    public static LoginManager getLoginManager() {
+        return ref;
+    }
 
     public void setCallback(LoginManagerCallback callback) {
         this.callback = callback;
@@ -17,11 +26,11 @@ public class LoginManager {
         if (callback == null) throw new Exception("must supply LoginManagerCallback reference");
         callback.startConnection();
         authenticate(username, password);
-
     }
 
-    public void authenticate (String username, String password) {
-
+    public void authenticate (String username, String password) throws Exception {
+        //wait(1500);
+        //this.authSuccess();
     }
 
     public void authSuccess() throws Exception {

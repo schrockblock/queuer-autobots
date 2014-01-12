@@ -20,8 +20,6 @@ import com.autobots.queuer.managers.LoginManager;
 
 public class LoginActivity extends ActionBarActivity implements LoginManagerCallback {
 
-    protected final ProgressBar spin = (ProgressBar)findViewById(R.id.loginProgress);
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,10 +27,13 @@ public class LoginActivity extends ActionBarActivity implements LoginManagerCall
         Button login = (Button)findViewById(R.id.loginButton);
         final EditText user = (EditText)findViewById(R.id.username);
         final EditText password = (EditText)findViewById(R.id.password);
+        final ProgressBar spin = (ProgressBar)findViewById(R.id.loginProgress);
+        spin.setVisibility(View.INVISIBLE);
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                LoginManager manager = new LoginManager();
+                LoginManager manager = LoginManager.getLoginManager();
+                manager.setCallback(LoginActivity.this);
                 try {
                     manager.login(user.getText().toString(), password.getText().toString());
                 } catch (Exception e) {
@@ -44,10 +45,12 @@ public class LoginActivity extends ActionBarActivity implements LoginManagerCall
     }
 
     public void startConnection() {
+        final ProgressBar spin = (ProgressBar)findViewById(R.id.loginProgress);
         spin.setVisibility(View.VISIBLE);
     }
 
     public void finishedConnection(boolean success) {
+        final ProgressBar spin = (ProgressBar)findViewById(R.id.loginProgress);
         spin.setVisibility(View.INVISIBLE);
     }
 
