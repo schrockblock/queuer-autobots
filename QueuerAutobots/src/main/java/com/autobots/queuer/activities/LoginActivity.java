@@ -28,7 +28,6 @@ public class LoginActivity extends ActionBarActivity implements LoginManagerCall
         final EditText user = (EditText)findViewById(R.id.username);
         final EditText password = (EditText)findViewById(R.id.password);
         final ProgressBar spin = (ProgressBar)findViewById(R.id.loginProgress);
-        spin.setVisibility(View.INVISIBLE);
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
