@@ -10,5 +10,6 @@
     <string name="hint_pass">password</string>
     <string name="acct_create">Create</string>
     <string name="acct_cancel">Cancel</string>
+    <string name="remember_me">Remember me</string>
 
 </resources>
