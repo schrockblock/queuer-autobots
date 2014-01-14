@@ -25,6 +25,7 @@ public class LoginActivity extends ActionBarActivity implements LoginManagerCall
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         Button login = (Button)findViewById(R.id.loginButton);
+        Button crAccount = (Button)findViewById(R.id.create_account);
         final EditText user = (EditText)findViewById(R.id.username);
         final EditText password = (EditText)findViewById(R.id.password);
         final ProgressBar spin = (ProgressBar)findViewById(R.id.loginProgress);
@@ -38,6 +39,12 @@ public class LoginActivity extends ActionBarActivity implements LoginManagerCall
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+            }
+        });
+        crAccount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setContentView(R.layout.activity_account);
             }
         });
 
