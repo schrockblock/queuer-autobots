@@ -31,4 +31,5 @@ dependencies {
     compile files('QueuerAutobots/src/main/res/lib/gson-2.2.4.jar')
     compile files('QueuerAutobots/src/main/res/lib/volley.jar')
     compile files('QueuerAutobots/src/main/res/lib/annotations.jar')
+    compile files('src/main/res/lib/nineoldandroids-2.4.0.jar')
 }
