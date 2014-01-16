@@ -24,7 +24,7 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:layout_gravity="center_horizontal">
 
         <Button
@@ -38,13 +38,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/acct_button"
-            android:id="@+id/button"
+            android:id="@+id/acct_button"
             android:layout_gravity="center_horizontal" />
 
     </LinearLayout>
 
 
     <include layout="@layout/spinner_status"
+        android:id="@+id/loginSpinner"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:layout_gravity="center_horizontal" />
