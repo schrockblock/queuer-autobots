@@ -1,7 +1,5 @@
 package com.autobots.queuer;
 
-import java.util.Hashtable;
-
 /**
  * Created by mammothbane on 1/16/14.
  */
