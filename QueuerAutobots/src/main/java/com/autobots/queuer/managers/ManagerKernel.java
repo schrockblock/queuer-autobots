@@ -10,7 +10,6 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.autobots.queuer.Constants;
 import com.autobots.queuer.QueuerApplication;
 import com.autobots.queuer.interfaces.AuthenticatedCallback;
-import com.autobots.queuer.interfaces.UserManager;
 import com.autobots.queuer.models.SignInModel;
 import com.google.gson.Gson;
 
@@ -21,13 +20,11 @@ import org.json.JSONObject;
  * Created by mammothbane on 1/17/14.
  */
 public class ManagerKernel {
-    private UserManager manager;
     private AuthenticatedCallback callback;
     private Context context;
     private boolean create;
 
-    public ManagerKernel(UserManager manager, boolean create) {
-        this.manager = manager;
+    public ManagerKernel(boolean create) {
         this.create = create;
     }
 
