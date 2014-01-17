@@ -1,4 +1,4 @@
-package de.timroes.android.listview;
+package com.autobots.queuer.interfaces;
 
 /**
  * Created by eschrock on 12/26/13.

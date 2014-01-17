@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.timroes.android.listview;
+package com.autobots.queuer.views;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -45,6 +45,7 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.autobots.queuer.R;
+import com.autobots.queuer.interfaces.RearrangementListener;
 import com.nineoldandroids.animation.Animator;
 import com.nineoldandroids.animation.AnimatorListenerAdapter;
 import com.nineoldandroids.animation.ObjectAnimator;

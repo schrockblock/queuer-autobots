@@ -49,7 +49,8 @@ public class LoginManager {
     }
 
     private void authenticate (String username, String password) throws Exception {
-        SignInModel model = new SignInModel(username, password);
+        authSuccess();
+        /*SignInModel model = new SignInModel(username, password);
         JSONObject signInJson = null;
         try {
             signInJson = new JSONObject(new Gson().toJson(model));
@@ -78,7 +79,7 @@ public class LoginManager {
         });
 
         ((QueuerApplication)context.getApplicationContext()).getRequestQueue().add(request);
-
+        */
 
     }
 

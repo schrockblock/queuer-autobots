@@ -66,7 +66,7 @@ public class LoginActivity extends ActionBarActivity implements AuthenticatedCal
         }
         Toast login_worked = Toast.makeText(this, login_notice, Toast.LENGTH_SHORT);
         login_worked.show();
-        //if (success) startActivity(new Intent(LoginActivity.this, ;
+        if (success) startActivity(new Intent(LoginActivity.this, FeedActivity.class)) ;
     }
 
 
