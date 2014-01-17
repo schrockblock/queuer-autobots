@@ -23,14 +23,14 @@ public class AccountActivity extends Activity implements LoginManagerCallback {
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                setContentView(R.layout.activity_login);
+                finish();
             }
         });
 
         create.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                finish();
             }
         });
 

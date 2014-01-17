@@ -1,5 +1,6 @@
 package com.autobots.queuer.activities;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
@@ -44,7 +45,7 @@ public class LoginActivity extends ActionBarActivity implements LoginManagerCall
         crAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                setContentView(R.layout.activity_account);
+                startActivity(new Intent(LoginActivity.this, AccountActivity.class));
             }
         });
 
