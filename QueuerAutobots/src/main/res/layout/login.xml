@@ -8,14 +8,17 @@
         android:id="@+id/username"
         android:hint="@string/hint_user"
         android:layout_height="wrap_content"
-        android:layout_width="fill_parent" />
+        android:layout_width="fill_parent"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"/>
 
 
     <EditText
         android:id="@+id/password"
         android:hint="@string/hint_pass"
         android:layout_height="wrap_content"
-        android:layout_width="fill_parent" />
+        android:layout_width="fill_parent"
+        android:password="true" />
 
 
 </LinearLayout>

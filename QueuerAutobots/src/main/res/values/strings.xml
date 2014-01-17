@@ -17,6 +17,7 @@
     <string name="n_items_deleted">%1$s items deleted</string>
     <string name="login_title">Login</string>
     <string name="acct_title">Create Account</string>
+    <string name="action_logout">Logout</string>
 
 
 </resources>

@@ -1,7 +1,11 @@
 package com.autobots.queuer.activities;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -9,6 +13,7 @@ import android.widget.Toast;
 
 import com.autobots.queuer.R;
 import com.autobots.queuer.adapters.FeedAdapter;
+import com.autobots.queuer.managers.LoginManager;
 import com.autobots.queuer.models.Project;
 import com.autobots.queuer.views.EnhancedListView;
 
@@ -50,4 +55,51 @@ public class FeedActivity extends ActionBarActivity {
         listView.enableRearranging();
 
     }
+
+    @Override
+    public void onBackPressed() {
+        new AlertDialog.Builder(this)
+                .setTitle("Logout")
+                .setMessage("Exit?")
+                .setNegativeButton(android.R.string.no, null)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        moveTaskToBack(true);
+                        finish();
+                        com.autobots.queuer.managers.LoginManager.setLoggedIn(false);
+                    }
+                }).create().show();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_feed, menu);
+        return true;
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_settings:
+                //open settings activity
+                return true;
+            case R.id.action_logout:
+                new AlertDialog.Builder(this)
+                        .setTitle("Logout")
+                        .setMessage("Are you sure you want to logout?")
+                        .setNegativeButton(android.R.string.no, null)
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface arg0, int arg1) {
+                                finish();
+                                com.autobots.queuer.managers.LoginManager.setLoggedIn(false);
+                            }
+                        }).create().show();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
+    }
+
 }

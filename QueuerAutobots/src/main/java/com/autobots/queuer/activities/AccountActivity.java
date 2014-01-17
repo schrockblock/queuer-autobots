@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.autobots.queuer.QueuerApplication;
@@ -49,19 +50,16 @@ public class AccountActivity extends Activity implements AuthenticatedCallback {
 
     public void startConnection() {
         ((ProgressBar)findViewById(R.id.acct_spinner).findViewById(R.id.loginProgress)).setVisibility(View.VISIBLE);
-
+        TextView connectionText = (TextView)findViewById(R.id.acct_spinner).findViewById(R.id.progress_tv);
+        connectionText.setText("Creating account...");
+        connectionText.setVisibility(View.VISIBLE);
     }
 
     public void finishedConnection(boolean success) {
         ((ProgressBar)findViewById(R.id.acct_spinner).findViewById(R.id.loginProgress)).setVisibility(View.INVISIBLE);
-        String acct_notice = "Your account creation ";
         if (success) {
-            acct_notice += "succeeded!";
-        } else {
-            acct_notice += "failed.";
+            Toast.makeText(this, "Account creation succeeded!", Toast.LENGTH_SHORT).show();
+            finish();
         }
-        Toast acct_worked = Toast.makeText(this, acct_notice, Toast.LENGTH_SHORT);
-        acct_worked.show();
-        if (success) finish();
     }
 }
