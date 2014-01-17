@@ -5,6 +5,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -13,7 +14,9 @@ import android.view.ViewGroup;
 import android.os.Build;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.autobots.queuer.R;
 import com.autobots.queuer.interfaces.AuthenticatedCallback;
@@ -27,12 +30,12 @@ public class LoginActivity extends ActionBarActivity implements AuthenticatedCal
         setContentView(R.layout.activity_login);
         Button login = (Button)findViewById(R.id.loginButton);
         Button crAccount = (Button)findViewById(R.id.acct_button);
-        final EditText user = (EditText)findViewById(R.id.username);
-        final EditText password = (EditText)findViewById(R.id.password);
+        final EditText user = (EditText)findViewById(R.id.login_et).findViewById(R.id.username);
+        final EditText password = (EditText)findViewById(R.id.login_et).findViewById(R.id.password);
+        final LoginManager manager = LoginManager.getLoginManager();
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                LoginManager manager = LoginManager.getLoginManager();
                 manager.setCallback(LoginActivity.this, LoginActivity.this);
                 try {
                     manager.login(user.getText().toString(), password.getText().toString());
@@ -44,18 +47,26 @@ public class LoginActivity extends ActionBarActivity implements AuthenticatedCal
         crAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(LoginActivity.this, AccountActivity.class));
+            startActivity(new Intent(LoginActivity.this, AccountActivity.class));
             }
         });
-
     }
 
     public void startConnection() {
-        ((ProgressBar)findViewById(R.id.loginProgress)).setVisibility(View.VISIBLE);
+        ((ProgressBar)findViewById(R.id.loginSpinner).findViewById(R.id.loginProgress)).setVisibility(View.VISIBLE);
     }
 
     public void finishedConnection(boolean success) {
-        ((ProgressBar)findViewById(R.id.loginProgress)).setVisibility(View.INVISIBLE);
+        ((ProgressBar)findViewById(R.id.loginSpinner).findViewById(R.id.loginProgress)).setVisibility(View.INVISIBLE);
+        String login_notice = "Your login ";
+        if (success) {
+            login_notice += "succeeded!";
+        } else {
+            login_notice += "failed.";
+        }
+        Toast login_worked = Toast.makeText(this, login_notice, Toast.LENGTH_SHORT);
+        login_worked.show();
+        //if (success) startActivity(new Intent(LoginActivity.this, ;
     }
 
 
