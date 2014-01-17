@@ -5,9 +5,9 @@
     android:layout_height="match_parent">
 
     <include layout="@layout/login"
+        android:id="@+id/acct_et"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        />
+        android:layout_height="wrap_content" />
 
     <Button
         android:id="@+id/acct_create"
