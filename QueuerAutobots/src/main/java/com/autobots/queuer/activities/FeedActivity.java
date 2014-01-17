@@ -110,6 +110,9 @@ public class FeedActivity extends ActionBarActivity {
 
         //listView.setDismissCallback(new EnhancedListView.OnDismissCallback()) {
 
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
 
         //}
 
