@@ -101,4 +101,13 @@ public class Task implements Serializable {
     public void setComplete(boolean finished) { complete = finished; }
 
     public boolean isComplete() {return complete;}
+=======
+/**
+ * Created by mammothbane on 1/17/14.
+ */
+public class Task {
+    private String name;
+    private int id;
+
+>>>>>>> some changes from class
 }
