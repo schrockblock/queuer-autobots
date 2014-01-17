@@ -16,10 +16,10 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 
 import com.autobots.queuer.R;
-import com.autobots.queuer.interfaces.LoginManagerCallback;
+import com.autobots.queuer.interfaces.AuthenticatedCallback;
 import com.autobots.queuer.managers.LoginManager;
 
-public class LoginActivity extends ActionBarActivity implements LoginManagerCallback {
+public class LoginActivity extends ActionBarActivity implements AuthenticatedCallback {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,12 +29,11 @@ public class LoginActivity extends ActionBarActivity implements LoginManagerCall
         Button crAccount = (Button)findViewById(R.id.acct_button);
         final EditText user = (EditText)findViewById(R.id.username);
         final EditText password = (EditText)findViewById(R.id.password);
-        final ProgressBar spin = (ProgressBar)findViewById(R.id.loginProgress);
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 LoginManager manager = LoginManager.getLoginManager();
-                manager.setCallback(LoginActivity.this);
+                manager.setCallback(LoginActivity.this, LoginActivity.this);
                 try {
                     manager.login(user.getText().toString(), password.getText().toString());
                 } catch (Exception e) {
@@ -52,13 +51,11 @@ public class LoginActivity extends ActionBarActivity implements LoginManagerCall
     }
 
     public void startConnection() {
-        final ProgressBar spin = (ProgressBar)findViewById(R.id.loginProgress);
-        spin.setVisibility(View.VISIBLE);
+        ((ProgressBar)findViewById(R.id.loginProgress)).setVisibility(View.VISIBLE);
     }
 
     public void finishedConnection(boolean success) {
-        final ProgressBar spin = (ProgressBar)findViewById(R.id.loginProgress);
-        spin.setVisibility(View.INVISIBLE);
+        ((ProgressBar)findViewById(R.id.loginProgress)).setVisibility(View.INVISIBLE);
     }
 
 

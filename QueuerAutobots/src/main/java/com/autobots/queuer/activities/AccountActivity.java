@@ -7,12 +7,12 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.autobots.queuer.R;
-import com.autobots.queuer.interfaces.LoginManagerCallback;
+import com.autobots.queuer.interfaces.AuthenticatedCallback;
 
 /**
  * Created by mammothbane on 1/13/14.
  */
-public class AccountActivity extends Activity implements LoginManagerCallback {
+public class AccountActivity extends Activity implements AuthenticatedCallback {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account);
