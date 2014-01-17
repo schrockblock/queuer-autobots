@@ -11,5 +11,10 @@
     <string name="acct_create">Create</string>
     <string name="acct_cancel">Cancel</string>
     <string name="remember_me">Remember Me</string>
+    <string name="undo">Undo</string>
+    <string name="undo_all">Undo All</string>
+    <string name="item_deleted">Item deleted</string>
+    <string name="n_items_deleted">%1$s items deleted</string>
+
 
 </resources>
