@@ -15,6 +15,8 @@
     <string name="undo_all">Undo All</string>
     <string name="item_deleted">Item deleted</string>
     <string name="n_items_deleted">%1$s items deleted</string>
+    <string name="login_title">Login</string>
+    <string name="acct_title">Create Account</string>
 
 
 </resources>
