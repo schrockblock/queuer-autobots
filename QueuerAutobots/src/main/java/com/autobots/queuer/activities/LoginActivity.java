@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.autobots.queuer.R;
@@ -28,6 +29,7 @@ public class LoginActivity extends ActionBarActivity implements AuthenticatedCal
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        setTitle(R.string.login_title);
         Button login = (Button)findViewById(R.id.loginButton);
         Button crAccount = (Button)findViewById(R.id.acct_button);
         final EditText user = (EditText)findViewById(R.id.login_et).findViewById(R.id.username);
@@ -54,29 +56,20 @@ public class LoginActivity extends ActionBarActivity implements AuthenticatedCal
 
     public void startConnection() {
         ((ProgressBar)findViewById(R.id.loginSpinner).findViewById(R.id.loginProgress)).setVisibility(View.VISIBLE);
+        TextView connectionText = (TextView)findViewById(R.id.loginSpinner).findViewById(R.id.progress_tv);
+        connectionText.setText("Logging in...");
+        connectionText.setVisibility(View.VISIBLE);
     }
 
     public void finishedConnection(boolean success) {
         ((ProgressBar)findViewById(R.id.loginSpinner).findViewById(R.id.loginProgress)).setVisibility(View.INVISIBLE);
-        String login_notice = "Your login ";
+        ((TextView)findViewById(R.id.loginSpinner).findViewById(R.id.progress_tv)).setVisibility(View.INVISIBLE);
         if (success) {
-            login_notice += "succeeded!";
-        } else {
-            login_notice += "failed.";
+            Toast.makeText(this, "Login succeeded.", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(LoginActivity.this, FeedActivity.class));
         }
-        Toast login_worked = Toast.makeText(this, login_notice, Toast.LENGTH_SHORT);
-        login_worked.show();
-        //if (success) startActivity(new Intent(LoginActivity.this, ;
     }
 
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.login, menu);
-        return true;
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
