@@ -14,22 +14,15 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.autobots.queuer.R;
-import com.autobots.queuer.adapters.FeedAdapter;
-import com.autobots.queuer.adapters.ProjectAdapter;
-import com.autobots.queuer.databases.TaskDataSource;
-import com.autobots.queuer.models.Project;
-import com.autobots.queuer.models.Task;
-import com.autobots.queuer.views.EnhancedListView;
-
-import java.util.ArrayList;
-
 /**
- * Created by Moseph on 1/20/14.
+ * Created by mammothbane on 1/17/14.
  */
 public class ProjectActivity extends ActionBarActivity {
 
-    private ProjectAdapter adapter;
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        return super.onCreateOptionsMenu(menu);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,44 +73,6 @@ public class ProjectActivity extends ActionBarActivity {
         listView.enableRearranging();
 
     }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_feed, menu);
-        return true;
-    }
-
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_settings:
-                //open settings activity
-                return true;
-            case R.id.action_logout:
-                new AlertDialog.Builder(this)
-                        .setTitle("Logout")
-                        .setMessage("Are you sure you want to logout?")
-                        .setNegativeButton(android.R.string.no, null)
-                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface arg0, int arg1) {
-                                finish();
-                                com.autobots.queuer.managers.LoginManager.setLoggedIn(false);
-                            }
-                        }).create().show();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-
-    }
-
 }
 
 
