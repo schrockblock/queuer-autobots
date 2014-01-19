@@ -25,7 +25,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**
- * Created by Moseph on 1/20/14.
+ * Created by mammothbane on 1/17/14.
  */
 public class ProjectActivity extends ActionBarActivity {
 
@@ -84,43 +84,5 @@ public class ProjectActivity extends ActionBarActivity {
         listView.enableRearranging();
 
     }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_feed, menu);
-        return true;
-    }
-
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_settings:
-                //open settings activity
-                return true;
-            case R.id.action_logout:
-                new AlertDialog.Builder(this)
-                        .setTitle("Logout")
-                        .setMessage("Are you sure you want to logout?")
-                        .setNegativeButton(android.R.string.no, null)
-                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface arg0, int arg1) {
-                                finish();
-                                com.autobots.queuer.managers.LoginManager.setLoggedIn(false);
-                            }
-                        }).create().show();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-
-    }
-
 }
 
