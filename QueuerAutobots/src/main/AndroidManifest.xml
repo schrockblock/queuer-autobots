@@ -32,6 +32,8 @@
         <activity android:name=".activities.FeedActivity"
             android:label="Task Manager"
             />
+        <activity android:name=".activities.ProjectActivity"
+            />
     </application>
 
 </manifest>

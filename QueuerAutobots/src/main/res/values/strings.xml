@@ -19,6 +19,7 @@
     <string name="acct_title">Create Account</string>
     <string name="action_logout">Logout</string>
     <string name="action_new_project">New Project</string>
+    <string name="action_new_task">New Task</string>
 
 
 </resources>
