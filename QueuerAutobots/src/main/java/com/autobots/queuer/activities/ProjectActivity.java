@@ -1,6 +1,5 @@
 package com.autobots.queuer.activities;
 
-<<<<<<< HEAD
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -86,4 +85,6 @@ public class ProjectActivity extends ActionBarActivity {
 
     }
 }
+
+
 
