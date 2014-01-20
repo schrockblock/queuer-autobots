@@ -38,7 +38,7 @@ public class FeedActivity extends ActionBarActivity {
 
         ArrayList<Project> projects = new ArrayList<Project>(20);
         for (int i = 0; i < 20; i++) {
-            projects.add(new Project(i, "Project " + i));
+            projects.add(new Project(i, "Project " + i,Color.CYAN));
         }
 
         EnhancedListView listView = (EnhancedListView)findViewById(R.id.lv_projects);
