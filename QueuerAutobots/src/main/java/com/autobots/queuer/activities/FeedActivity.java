@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.autobots.queuer.R;
@@ -35,11 +36,9 @@ public class FeedActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feed);
 
-
-
         ArrayList<Project> projects = new ArrayList<Project>(20);
         for (int i = 0; i < 20; i++) {
-            projects.add(new Project(i, "Project " + i, Color.CYAN) );
+            projects.add(new Project(i, "Project " + i,Color.CYAN));
         }
 
         EnhancedListView listView = (EnhancedListView)findViewById(R.id.lv_projects);
