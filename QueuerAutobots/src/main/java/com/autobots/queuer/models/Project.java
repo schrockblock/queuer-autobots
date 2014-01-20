@@ -15,9 +15,10 @@ public class Project implements Serializable {
     private int color;
     private ArrayList<Task> tasks;
 
-    public Project(int id, String title) {
+    public Project(int id, String title, int color) {
         this.id = id;
         this.title = title;
+        this.color = color;
         tasks = new ArrayList<Task>(20);
     }
 
