@@ -44,7 +44,7 @@ public class ProjectActivity extends ActionBarActivity {
         for (int i = 0; i < 10; i++) {
             tasks.add(new Task(i, "Task " + i));
         }
-        
+
 
 
         EnhancedListView listView = (EnhancedListView)findViewById(R.id.lv_tasks);
@@ -52,6 +52,8 @@ public class ProjectActivity extends ActionBarActivity {
         listView.setAdapter(adapter);
 
         if (!project.hasTasks()){
+            listView.setVisibility(View.GONE);
+            tView.setTextSize(26);
             tView.setVisibility(View.VISIBLE);
         }
 
@@ -64,7 +66,7 @@ public class ProjectActivity extends ActionBarActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Toast.makeText(ProjectActivity.this, "Clicked on item " + adapter.getItem(i), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(ProjectActivity.this, "Clicked on item " + adapter.getItem(i), Toast.LENGTH_SHORT).show();
             }
         });
 

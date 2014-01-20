@@ -57,7 +57,7 @@ public class FeedActivity extends ActionBarActivity {
                 intent.putExtra("EXTRA_PROJECT",projectClicked);
                 startActivity(intent);
 
-                Toast.makeText(FeedActivity.this, "Clicked on item " + adapter.getItem(i), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(FeedActivity.this, "Clicked on item " + adapter.getItem(i), Toast.LENGTH_SHORT).show();
             }
         });
 
