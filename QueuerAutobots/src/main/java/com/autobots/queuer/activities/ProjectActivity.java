@@ -2,12 +2,14 @@ package com.autobots.queuer.activities;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.autobots.queuer.R;
@@ -30,15 +32,29 @@ public class ProjectActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.project_feed);
+        TextView tView = (TextView) findViewById(R.id.no_tasks);
+        tView.setVisibility(View.GONE);
 
-        ArrayList<Task> tasks = new ArrayList<Task>(10);
+        Project project = (Project) getIntent().getSerializableExtra("EXTRA_PROJECT");
+
+
+
+        ArrayList<Task> tasks = project.getTaskList();
+
         for (int i = 0; i < 10; i++) {
             tasks.add(new Task(i, "Task " + i));
         }
+        
+
 
         EnhancedListView listView = (EnhancedListView)findViewById(R.id.lv_tasks);
         adapter = new ProjectAdapter(this, tasks);
         listView.setAdapter(adapter);
+
+        if (!project.hasTasks()){
+            tView.setVisibility(View.VISIBLE);
+        }
+
 
         //listView.setDismissCallback(new EnhancedListView.OnDismissCallback()) {
 
@@ -59,17 +75,8 @@ public class ProjectActivity extends ActionBarActivity {
 
     @Override
     public void onBackPressed() {
-        new AlertDialog.Builder(this)
-                .setTitle("Logout")
-                .setMessage("Exit?")
-                .setNegativeButton(android.R.string.no, null)
-                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface arg0, int arg1) {
-                        moveTaskToBack(true);
-                        finish();
-                        com.autobots.queuer.managers.LoginManager.setLoggedIn(false);
-                    }
-                }).create().show();
+        super.onBackPressed();
+
     }
 
     @Override
