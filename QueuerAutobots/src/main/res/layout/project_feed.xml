@@ -6,8 +6,8 @@
 
     <com.autobots.queuer.views.EnhancedListView
         android:layout_width="fill_parent"
-        android:id="@+id/lv_projects"
-        android:layout_height="fill_parent">
-    </com.autobots.queuer.views.EnhancedListView>
+        android:layout_height="fill_parent"
+        android:id="@+id/lv_tasks">
+        </com.autobots.queuer.views.EnhancedListView>
 
 </LinearLayout>

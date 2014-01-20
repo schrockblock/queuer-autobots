@@ -8,35 +8,36 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import com.autobots.queuer.R;
 import com.autobots.queuer.adapters.FeedAdapter;
-import com.autobots.queuer.managers.LoginManager;
+import com.autobots.queuer.adapters.ProjectAdapter;
 import com.autobots.queuer.models.Project;
+import com.autobots.queuer.models.Task;
 import com.autobots.queuer.views.EnhancedListView;
 
 import java.util.ArrayList;
 
 /**
- * Created by mammothbane on 1/17/14.
+ * Created by Moseph on 1/20/14.
  */
-public class FeedActivity extends ActionBarActivity {
-    private FeedAdapter adapter;
+public class ProjectActivity extends ActionBarActivity {
+
+    private ProjectAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_feed);
+        setContentView(R.layout.project_feed);
 
-        ArrayList<Project> projects = new ArrayList<Project>(20);
-        for (int i = 0; i < 20; i++) {
-            projects.add(new Project(i, "Project " + i));
+        ArrayList<Task> tasks = new ArrayList<Task>(10);
+        for (int i = 0; i < 10; i++) {
+            tasks.add(new Task(i, "Task " + i));
         }
 
-        EnhancedListView listView = (EnhancedListView)findViewById(R.id.lv_projects);
-        adapter = new FeedAdapter(this, projects);
+        EnhancedListView listView = (EnhancedListView)findViewById(R.id.lv_tasks);
+        adapter = new ProjectAdapter(this, tasks);
         listView.setAdapter(adapter);
 
         //listView.setDismissCallback(new EnhancedListView.OnDismissCallback()) {
@@ -47,12 +48,7 @@ public class FeedActivity extends ActionBarActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                /*
-                ** TODO: implement onClick() for what happens when user clicks on a project.
-                 * intent() based, make project serializable ( need to google that)
-                  * transfer that intent to ProjectActivity.
-                 */
-                Toast.makeText(FeedActivity.this, "Clicked on item " + adapter.getItem(i), Toast.LENGTH_SHORT).show();
+                Toast.makeText(ProjectActivity.this, "Clicked on item " + adapter.getItem(i), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -108,3 +104,6 @@ public class FeedActivity extends ActionBarActivity {
     }
 
 }
+
+
+
