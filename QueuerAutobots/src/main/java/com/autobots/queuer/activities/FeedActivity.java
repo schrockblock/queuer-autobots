@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
@@ -34,9 +35,11 @@ public class FeedActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feed);
 
+
+
         ArrayList<Project> projects = new ArrayList<Project>(20);
         for (int i = 0; i < 20; i++) {
-            projects.add(new Project(i, "Project " + i));
+            projects.add(new Project(i, "Project " + i, Color.CYAN) );
         }
 
         EnhancedListView listView = (EnhancedListView)findViewById(R.id.lv_projects);
@@ -54,7 +57,7 @@ public class FeedActivity extends ActionBarActivity {
 
                 Project projectClicked = adapter.getItem(i);
                 Intent intent = new Intent(context, ProjectActivity.class);
-                intent.putExtra("EXTRA_PROJECT",projectClicked);
+                intent.putExtra("EXTRA_PROJECT", projectClicked);
                 startActivity(intent);
 
                 //Toast.makeText(FeedActivity.this, "Clicked on item " + adapter.getItem(i), Toast.LENGTH_SHORT).show();

@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,6 +37,9 @@ public class ProjectActivity extends ActionBarActivity {
         tView.setVisibility(View.GONE);
 
         Project project = (Project) getIntent().getSerializableExtra("EXTRA_PROJECT");
+        getActionBar().setTitle(project.getTitle());
+        LinearLayout layout = (LinearLayout) findViewById(R.id.project_feed);
+        layout.setBackgroundColor(project.getColor());
 
 
 
