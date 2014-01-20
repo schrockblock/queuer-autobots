@@ -18,6 +18,7 @@
     <string name="login_title">Login</string>
     <string name="acct_title">Create Account</string>
     <string name="action_logout">Logout</string>
+    <string name="no_projects">There are no projects.</string>
 
 
 </resources>
