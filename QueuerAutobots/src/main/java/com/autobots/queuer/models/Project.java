@@ -15,6 +15,9 @@ public class Project implements Serializable {
     private int color;
     private ArrayList<Task> tasks;
 
+    /*
+    * TODO: implement Project so that to getTaskList makes a query to database asking for all tasks. Same thing for hasTasks()
+    * */
     public Project(int id, String title, int color) {
         this.id = id;
         this.title = title;
