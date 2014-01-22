@@ -19,7 +19,7 @@ public class Project implements Serializable {
         this.id = id;
         this.title = title;
         this.color = color;
-        tasks = new ArrayList<Task>(20);
+        tasks = new ArrayList<Task>();
     }
 
     public int getId() {

@@ -60,6 +60,10 @@ public class FeedAdapter extends BaseAdapter implements RearrangementListener {
 
         ((TextView)view.findViewById(R.id.tv_title)).setText((getItem(i)).getTitle());
         view.findViewById(R.id.ll_project).setBackgroundColor(getItem(i).getColor());
+        if(getItem(i).hasTasks())
+            ((TextView)view.findViewById(R.id.first_task)).setText(getItem(i).getTaskList().get(0).getName());
+        else
+            ((TextView)view.findViewById(R.id.first_task)).setVisibility(View.GONE);
 
         return view;
     }
