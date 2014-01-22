@@ -1,5 +1,9 @@
 package com.autobots.queuer.models;
 
+import android.content.Context;
+
+import com.autobots.queuer.databases.TaskDataSource;
+
 import java.util.Date;
 
 /**
@@ -15,17 +19,24 @@ public class Task {
     private Date updated_at;
     private boolean complete;
 
-    public Task(int id, String name, int project_id, int local_id, int position, boolean complete, Date created_at, Date updated_at) {
+    public Task(Context context, int id, String name, int project_id, int position, boolean complete, Date created_at, Date updated_at) {
         this.id = id;
         this.name = name;
         this.project_id = project_id;
-        this.local_id = local_id;
         this.position = position;
         this.created_at = created_at;
         this.updated_at = updated_at;
         this.complete = complete;
+
+        TaskDataSource datasource = new TaskDataSource(context);
+        datasource.open();
+        setLocalId(datasource.createTask(name,project_id, id, position, complete).local_id);
+        datasource.close();
     }
 
+    public Task() {
+
+    }
 
     public String getName() {
         return name;
@@ -86,4 +97,6 @@ public class Task {
     }
 
     public void setComplete(boolean finished) { complete = finished; }
+
+    public boolean isComplete() {return complete;}
 }

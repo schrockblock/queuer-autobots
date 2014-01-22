@@ -22,7 +22,7 @@ public class Project implements Serializable {
         this.id = id;
         this.title = title;
         this.color = color;
-        tasks = new ArrayList<Task>(20);
+        ArrayList<Task> tasks = new ArrayList<Task>(20);
     }
 
     public int getId() {

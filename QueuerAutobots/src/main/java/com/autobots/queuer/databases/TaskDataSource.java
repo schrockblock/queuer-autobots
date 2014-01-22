@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.autobots.queuer.models.Task;
 
-import org.w3c.dom.Comment;
+
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -23,7 +23,7 @@ public class TaskDataSource {
             TaskOpenHelper.COLUMN_SERVER_ID,
             TaskOpenHelper.COLUMN_PROJECT_SERVER_ID,
             TaskOpenHelper.COLUMN_TEXT,
-            TaskOpenHelper.COLUMN_COMPLETED
+            TaskOpenHelper.COLUMN_COMPLETED,
             TaskOpenHelper.COLUMN_POSITION,
             TaskOpenHelper.COLUMN_CREATED,
             TaskOpenHelper.COLUMN_UPDATED,
@@ -60,26 +60,40 @@ public class TaskDataSource {
         return newTask;
     }
 
+    public void updateTask(Task task){
+        ContentValues values = new ContentValues();
+        values.put(TaskOpenHelper.COLUMN_SERVER_ID, task.getLocalId());
+        values.put(TaskOpenHelper.COLUMN_PROJECT_SERVER_ID, task.getProjectId());
+        values.put(TaskOpenHelper.COLUMN_POSITION, task.getPosition());
+        int complete = task.isComplete() ? 1 : 0;
+        values.put(TaskOpenHelper.COLUMN_COMPLETED, complete);
+        values.put(TaskOpenHelper.COLUMN_TEXT, task.getName());
+
+        database.update(TaskOpenHelper.TABLE_TASKS, values, TaskOpenHelper.COLUMN_SERVER_ID + " = ?",
+                new String[] {String.valueOf(task.getLocalId())});
+    }
+
     public void deleteTask(Task task) {
-        long id = task.getId();
-        System.out.println("Comment deleted with id: " + id);
-        database.delete(TaskOpenHelper.TABLE_TASKS, TaskOpenHelper.COLUMN_ID
-                + " = " + id, null);
+        String[] whereArgs = new String[1];
+        whereArgs[0] = Integer.toString(task.getLocalId());
+        database.delete(TaskOpenHelper.TABLE_TASKS, TaskOpenHelper.COLUMN_ID + " = ?",
+                whereArgs);
     }
 
     public ArrayList<Task> getAllTasks() {
-        ArrayList<Task> tasks = new ArrayList<Task();
+        ArrayList<Task> tasks = new ArrayList<Task>();
 
         Cursor cursor = database.query(TaskOpenHelper.TABLE_TASKS,
                 allColumns, null, null, null, null, null);
 
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            Task task = cursorToTask(cursor);
-            tasks.add(task);
-            cursor.moveToNext();
+        if( cursor.moveToFirst()){
+            tasks.add(cursorToTask(cursor));
+
+            while(cursor.moveToNext()){
+                tasks.add(cursorToTask(cursor));
+            }
         }
-        // make sure to close the cursor
+
         cursor.close();
         return tasks;
     }
