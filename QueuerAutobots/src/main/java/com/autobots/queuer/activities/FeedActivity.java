@@ -40,6 +40,11 @@ public class FeedActivity extends ActionBarActivity {
         ArrayList<Project> projects = new ArrayList<Project>(20);
         for (int i = 0; i < 20; i++) {
             projects.add(new Project(i, "Project " + i,Color.CYAN));
+            if(i == 3){
+                projects.get(i).getTaskList().add(new Task());
+                projects.get(i).getTaskList().add(new Task());
+                projects.get(i).getTaskList().add(new Task());
+            }
         }
 
         EnhancedListView listView = (EnhancedListView)findViewById(R.id.lv_projects);
