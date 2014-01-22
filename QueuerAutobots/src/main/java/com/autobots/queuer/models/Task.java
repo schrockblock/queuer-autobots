@@ -13,8 +13,9 @@ public class Task {
     private int position;
     private Date created_at;
     private Date updated_at;
+    private boolean complete;
 
-    public Task(int id, String name, int project_id, int local_id, int position, Date created_at, Date updated_at) {
+    public Task(int id, String name, int project_id, int local_id, int position, boolean complete, Date created_at, Date updated_at) {
         this.id = id;
         this.name = name;
         this.project_id = project_id;
@@ -22,6 +23,7 @@ public class Task {
         this.position = position;
         this.created_at = created_at;
         this.updated_at = updated_at;
+        this.complete = complete;
     }
 
 
@@ -41,21 +43,21 @@ public class Task {
         this.id = id;
     }
 
-    public int getProject_id() {
+    public int getProjectId() {
         return project_id;
     }
 
-    public void setProject_id(int project_id) {
+    public void setProjectId(int project_id) {
         this.project_id = project_id;
     }
 
 
-    public int getLocal_id() {
+    public int getLocalId() {
 
         return local_id;
     }
 
-    public void setLocal_id(int local_id) {
+    public void setLocalId(int local_id) {
         this.local_id = local_id;
     }
 
@@ -67,19 +69,21 @@ public class Task {
         this.position = position;
     }
 
-    public Date getCreated_at() {
+    public Date getCreatedAt() {
         return created_at;
     }
 
-    public void setCreated_at(Date created_at) {
+    public void setCreatedAt(Date created_at) {
         this.created_at = created_at;
     }
 
-    public Date getUpdated_at() {
+    public Date getUpdatedAt() {
         return updated_at;
     }
 
-    public void setUpdated_at(Date updated_at) {
+    public void setUpdatedAt(Date updated_at) {
         this.updated_at = updated_at;
     }
+
+    public void setComplete(boolean finished) { complete = finished; }
 }
