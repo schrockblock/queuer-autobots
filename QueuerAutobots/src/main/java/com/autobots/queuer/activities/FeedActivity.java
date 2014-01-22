@@ -66,8 +66,11 @@ public class FeedActivity extends ActionBarActivity {
         listView.setDismissCallback(new EnhancedListView.OnDismissCallback() {
             @Override
             public EnhancedListView.Undoable onDismiss(EnhancedListView listView, final int position) {
+                if(!adapter.getItem(position).hasTasks())
+                    return null;
                 final Task task = adapter.getItem(position).getTaskList().get(0);
                 adapter.getItem(position).getTaskList().remove(0);
+                adapter.notifyDataSetChanged();
                 return new EnhancedListView.Undoable() {
                     @Override
                     public void undo() {
