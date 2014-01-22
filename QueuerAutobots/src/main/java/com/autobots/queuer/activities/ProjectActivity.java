@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.autobots.queuer.R;
 import com.autobots.queuer.adapters.FeedAdapter;
 import com.autobots.queuer.adapters.ProjectAdapter;
+import com.autobots.queuer.databases.TaskDataSource;
 import com.autobots.queuer.models.Project;
 import com.autobots.queuer.models.Task;
 import com.autobots.queuer.views.EnhancedListView;
@@ -36,26 +37,26 @@ public class ProjectActivity extends ActionBarActivity {
         TextView tView = (TextView) findViewById(R.id.no_tasks);
         tView.setVisibility(View.GONE);
 
-        Project project = (Project) getIntent().getSerializableExtra("EXTRA_PROJECT");
-        getActionBar().setTitle(project.getTitle());
+        Project project = (Project) getIntent().getSerializableExtra("PROJECT");
+        int projectId = project.getId();
+        getActionBar().setTitle(project.getName());
         LinearLayout layout = (LinearLayout) findViewById(R.id.project_feed);
         layout.setBackgroundColor(project.getColor());
 
 
 
-        ArrayList<Task> tasks = project.getTaskList();
-
-        for (int i = 0; i < 10; i++) {
-            tasks.add(new Task(i, "Task " + i));
-        }
 
 
+        TaskDataSource tds = new TaskDataSource(this);
+        tds.open();
+        ArrayList<Task> tasks = tds.getAllTasks();
+        tds.close();
 
         EnhancedListView listView = (EnhancedListView)findViewById(R.id.lv_tasks);
         adapter = new ProjectAdapter(this, tasks);
         listView.setAdapter(adapter);
 
-        if (!project.hasTasks()){
+        if (adapter.isEmpty()){
             listView.setVisibility(View.GONE);
             tView.setTextSize(26);
             tView.setVisibility(View.VISIBLE);

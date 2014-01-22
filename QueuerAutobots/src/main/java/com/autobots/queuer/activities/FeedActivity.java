@@ -28,11 +28,9 @@ import java.util.ArrayList;
  */
 public class FeedActivity extends ActionBarActivity {
     private FeedAdapter adapter;
-    private Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        context = this;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feed);
 
@@ -52,11 +50,11 @@ public class FeedActivity extends ActionBarActivity {
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
 
-                Project projectClicked = adapter.getItem(i);
-                Intent intent = new Intent(context, ProjectActivity.class);
-                intent.putExtra("EXTRA_PROJECT", projectClicked);
+
+                Intent intent = new Intent(FeedActivity.this, ProjectActivity.class);
+                intent.putExtra("PROJECT", adapter.getItem(position));
                 startActivity(intent);
 
                 //Toast.makeText(FeedActivity.this, "Clicked on item " + adapter.getItem(i), Toast.LENGTH_SHORT).show();

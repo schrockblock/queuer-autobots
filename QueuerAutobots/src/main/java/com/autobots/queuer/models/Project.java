@@ -11,18 +11,16 @@ import java.util.ArrayList;
  */
 public class Project implements Serializable {
     private int id;
-    private String title;
+    private String name;
     private int color;
     private ArrayList<Task> tasks;
 
-    /*
-    * TODO: implement Project so that to getTaskList makes a query to database asking for all tasks. Same thing for hasTasks()
-    * */
-    public Project(int id, String title, int color) {
+    
+    public Project(int id, String name, int color) {
         this.id = id;
-        this.title = title;
+        this.name = name;
         this.color = color;
-        ArrayList<Task> tasks = new ArrayList<Task>(20);
+        
     }
 
     public int getId() {
@@ -33,21 +31,25 @@ public class Project implements Serializable {
         this.id = id;
     }
 
-    public String getTitle() {
-        return title;
+    public String getName() {
+        return name;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public int getColor() {
         return color;
     }
 
-    public boolean hasTasks(){ return !tasks.isEmpty();}
+    public ArrayList<Task> getTasks() {
+        return tasks;
+    }
 
-    public ArrayList<Task> getTaskList() { return tasks;}
+    public void setTasks(ArrayList<Task> tasks) {
+        this.tasks = tasks;
+    }
 
     public void setColor(int color) {
         this.color = color;
