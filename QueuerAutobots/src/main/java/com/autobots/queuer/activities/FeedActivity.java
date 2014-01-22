@@ -30,6 +30,7 @@ import java.util.ArrayList;
 public class FeedActivity extends ActionBarActivity {
     private FeedAdapter adapter;
     private Context context;
+    private ArrayList<Project> emptyProjects = new ArrayList<Project>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,11 +42,22 @@ public class FeedActivity extends ActionBarActivity {
         for (int i = 0; i < 20; i++) {
             projects.add(new Project(i, "Project " + i,Color.CYAN));
             if(i == 3){
-                projects.get(i).getTaskList().add(new Task());
-                projects.get(i).getTaskList().add(new Task());
-                projects.get(i).getTaskList().add(new Task());
+                projects.get(i).getTaskList().add(new Task(123,"FirstTask"));
+                projects.get(i).getTaskList().add(new Task(12,"SecondTask"));
+                projects.get(i).getTaskList().add(new Task(1,"Last"));
             }
         }
+
+        for(int k = 0; k < projects.size(); k++){
+            if(!projects.get(k).hasTasks()){
+                emptyProjects.add(projects.get(k));
+                projects.remove(k);
+                k--;
+            }
+        }
+
+        if(projects.size() != 0)
+            findViewById(R.id.msg_noProjects).setVisibility(View.GONE);
 
         EnhancedListView listView = (EnhancedListView)findViewById(R.id.lv_projects);
         adapter = new FeedAdapter(this, projects);
