@@ -19,6 +19,7 @@ import com.autobots.queuer.R;
 import com.autobots.queuer.adapters.FeedAdapter;
 import com.autobots.queuer.managers.LoginManager;
 import com.autobots.queuer.models.Project;
+import com.autobots.queuer.models.Task;
 import com.autobots.queuer.views.EnhancedListView;
 
 import java.util.ArrayList;
@@ -45,10 +46,19 @@ public class FeedActivity extends ActionBarActivity {
         adapter = new FeedAdapter(this, projects);
         listView.setAdapter(adapter);
 
-        //listView.setDismissCallback(new EnhancedListView.OnDismissCallback()) {
-
-
-        //}
+        listView.setDismissCallback(new EnhancedListView.OnDismissCallback() {
+            @Override
+            public EnhancedListView.Undoable onDismiss(EnhancedListView listView, final int position) {
+                final Task task = adapter.getItem(position).getTaskList().get(0);
+                adapter.getItem(position).getTaskList().remove(0);
+                return new EnhancedListView.Undoable() {
+                    @Override
+                    public void undo() {
+                        adapter.getItem(position).getTaskList().add(0, task);
+                    }
+                };
+            }
+        });
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
