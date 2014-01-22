@@ -80,6 +80,9 @@ public class TaskDataSource {
                 whereArgs);
     }
 
+    /*
+    ** TODO: implement getProjectTasks(int project_id)
+     */
     public ArrayList<Task> getAllTasks() {
         ArrayList<Task> tasks = new ArrayList<Task>();
 
