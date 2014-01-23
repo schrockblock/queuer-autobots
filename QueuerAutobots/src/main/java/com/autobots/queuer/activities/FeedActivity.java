@@ -17,8 +17,11 @@ import android.widget.Toast;
 
 import com.autobots.queuer.R;
 import com.autobots.queuer.adapters.FeedAdapter;
+import com.autobots.queuer.databases.ProjectDataSource;
+import com.autobots.queuer.databases.TaskDataSource;
 import com.autobots.queuer.managers.LoginManager;
 import com.autobots.queuer.models.Project;
+import com.autobots.queuer.models.Task;
 import com.autobots.queuer.views.EnhancedListView;
 
 import java.util.ArrayList;
@@ -29,24 +32,55 @@ import java.util.ArrayList;
 public class FeedActivity extends ActionBarActivity {
     private FeedAdapter adapter;
 
+    private Context context;
+    private ArrayList<Project> emptyProjects = new ArrayList<Project>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feed);
+        ProjectDataSource pds = new ProjectDataSource();
+        TaskDataSource tds = new TaskDataSource(this);
 
-        ArrayList<Project> projects = new ArrayList<Project>(20);
+        ArrayList<Project> projects = pds.getAllProjects();
         for (int i = 0; i < 20; i++) {
             projects.add(new Project(i, "Project " + i,Color.CYAN));
+            if(i == 3){
+                
+            }
         }
+
+        for(int k = 0; k < projects.size(); k++){
+            if(!projects.get(k).hasTasks()){
+                emptyProjects.add(projects.get(k));
+                projects.remove(k);
+                k--;
+            }
+        }
+
+        if(projects.size() != 0)
+            findViewById(R.id.msg_noProjects).setVisibility(View.GONE);
 
         EnhancedListView listView = (EnhancedListView)findViewById(R.id.lv_projects);
         adapter = new FeedAdapter(this, projects);
         listView.setAdapter(adapter);
 
-        //listView.setDismissCallback(new EnhancedListView.OnDismissCallback()) {
-
-
-        //}
+        listView.setDismissCallback(new EnhancedListView.OnDismissCallback() {
+            @Override
+            public EnhancedListView.Undoable onDismiss(EnhancedListView listView, final int position) {
+                if(!adapter.getItem(position).hasTasks())
+                    return null;
+                final Task task = adapter.getItem(position).getTaskList().get(0);
+                adapter.getItem(position).getTaskList().remove(0);
+                adapter.notifyDataSetChanged();
+                return new EnhancedListView.Undoable() {
+                    @Override
+                    public void undo() {
+                        adapter.getItem(position).getTaskList().add(0, task);
+                    }
+                };
+            }
+        });
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
