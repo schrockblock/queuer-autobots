@@ -49,7 +49,7 @@ public class ProjectActivity extends ActionBarActivity {
 
         TaskDataSource tds = new TaskDataSource(this);
         tds.open();
-        ArrayList<Task> tasks = tds.getAllTasks();
+        ArrayList<Task> tasks = tds.getProjectTasks(projectId);
         tds.close();
 
         EnhancedListView listView = (EnhancedListView)findViewById(R.id.lv_tasks);

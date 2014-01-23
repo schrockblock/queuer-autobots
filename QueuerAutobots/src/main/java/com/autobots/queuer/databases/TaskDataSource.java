@@ -80,9 +80,6 @@ public class TaskDataSource {
                 whereArgs);
     }
 
-    /*
-    ** TODO: implement getProjectTasks(int project_id)
-     */
     public ArrayList<Task> getAllTasks() {
         ArrayList<Task> tasks = new ArrayList<Task>();
 
@@ -99,6 +96,25 @@ public class TaskDataSource {
 
         cursor.close();
         return tasks;
+    }
+
+    public ArrayList<Task> getProjectTasks(int project_id){
+        ArrayList<Task> projectTasks = new ArrayList<Task>();
+
+        Cursor cursor = database.query(TaskOpenHelper.TABLE_TASKS,
+                allColumns, TaskOpenHelper.COLUMN_PROJECT_SERVER_ID + " = ?",
+                new String[] {Integer.toString(project_id)},null,null,null);
+
+        if( cursor.moveToFirst()){
+            projectTasks.add(cursorToTask(cursor));
+
+            while(cursor.moveToNext()){
+                projectTasks.add(cursorToTask(cursor));
+            }
+        }
+
+        cursor.close();
+        return projectTasks;
     }
 
     private Task cursorToTask(Cursor cursor) {
