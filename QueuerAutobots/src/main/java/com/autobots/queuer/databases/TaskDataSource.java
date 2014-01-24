@@ -41,7 +41,7 @@ public class TaskDataSource {
         dbHelper.close();
     }
 
-    public Task createTask(String text, int projectId, int serverId, int position, boolean completed) {
+    public Task createTask(String text, long projectId, int serverId, int position, boolean completed) {
         ContentValues values = new ContentValues();
         values.put(TaskOpenHelper.COLUMN_SERVER_ID, serverId);
         values.put(TaskOpenHelper.COLUMN_PROJECT_SERVER_ID, projectId);
@@ -98,12 +98,12 @@ public class TaskDataSource {
         return tasks;
     }
 
-    public ArrayList<Task> getProjectTasks(int project_id){
+    public ArrayList<Task> getProjectTasks(long project_id){
         ArrayList<Task> projectTasks = new ArrayList<Task>();
 
         Cursor cursor = database.query(TaskOpenHelper.TABLE_TASKS,
                 allColumns, TaskOpenHelper.COLUMN_PROJECT_SERVER_ID + " = ?",
-                new String[] {Integer.toString(project_id)},null,null,null);
+                new String[] {Long.toString(project_id)}, null,null,null);
 
         if( cursor.moveToFirst()){
             projectTasks.add(cursorToTask(cursor));

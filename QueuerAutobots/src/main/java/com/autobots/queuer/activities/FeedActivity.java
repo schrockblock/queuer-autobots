@@ -44,14 +44,23 @@ public class FeedActivity extends ActionBarActivity {
         TaskDataSource tds = new TaskDataSource(this);
 
         ArrayList<Project> projects = pds.getAllProjects();
-        ProjectAdapter pAdapter = new ProjectAdapter(this,projects);
-        for (int i = 0; i < 20; i++) {
-            if(i == 3){
+        FeedAdapter fAdapter = new FeedAdapter(this,projects);
+        if(!fAdapter.isEmpty()){
+            ArrayList<Task> tasks = tds.getProjectTasks(fAdapter.getItemId(0));
+            ProjectAdapter pAdapter = new ProjectAdapter(this, tasks);
+            if(pAdapter.isEmpty()){
+                /*
+                ** Not sure if this is going to work. Still not tested.
+                */
                 TaskDataSource tds = new TaskDataSource(this);
-                tds.createTask("Task1", pAdapter.getItemId(i), )
-
+                Task taskOne = tds.createTask("Task1", pAdapter.getItemId(0),0,0, false );
+                Task taskTwo = tds.createTask("Task2", pAdapter.getItemId(0),1,1, false );
+                tasks = tds.getProjectTasks(fAdapter.getItemId(0));
+                fAdapter.getItem(0).setTaskList(tasks);
             }
+
         }
+
 
         for(int k = 0; k < projects.size(); k++){
             if(!projects.get(k).hasTasks()){
