@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.autobots.queuer.R;
 import com.autobots.queuer.adapters.FeedAdapter;
+import com.autobots.queuer.adapters.ProjectAdapter;
 import com.autobots.queuer.databases.ProjectDataSource;
 import com.autobots.queuer.databases.TaskDataSource;
 import com.autobots.queuer.managers.LoginManager;
@@ -43,9 +44,11 @@ public class FeedActivity extends ActionBarActivity {
         TaskDataSource tds = new TaskDataSource(this);
 
         ArrayList<Project> projects = pds.getAllProjects();
+        ProjectAdapter pAdapter = new ProjectAdapter(this,projects);
         for (int i = 0; i < 20; i++) {
-            projects.add(new Project(i, "Project " + i,Color.CYAN));
             if(i == 3){
+                TaskDataSource tds = new TaskDataSource(this);
+                tds.createTask("Task1", pAdapter.getItemId(i), )
 
             }
         }
