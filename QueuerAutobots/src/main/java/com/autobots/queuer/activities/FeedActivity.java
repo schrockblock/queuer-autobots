@@ -46,7 +46,7 @@ public class FeedActivity extends ActionBarActivity {
         for (int i = 0; i < 20; i++) {
             projects.add(new Project(i, "Project " + i,Color.CYAN));
             if(i == 3){
-                
+
             }
         }
 

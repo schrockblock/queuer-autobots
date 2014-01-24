@@ -63,7 +63,7 @@ public class ProjectDataSource {
             ContentValues values = new ContentValues();
             values.put(ProjectOpenHelper.COLUMN_SERVER_ID, project.getId());
             values.put(ProjectOpenHelper.COLUMN_COLOR, project.getColor());
-            values.put(ProjectOpenHelper.COLUMN_TITLE, project.getTitle());
+            values.put(ProjectOpenHelper.COLUMN_TITLE, project.getName());
 
             database.update(ProjectOpenHelper.TABLE_PROJECTS,
                     values,
