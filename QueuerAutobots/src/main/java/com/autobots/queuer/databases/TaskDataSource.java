@@ -16,7 +16,8 @@ import java.util.List;
 /**
  * Created by modsoussi on 1/21/14.
  */
-public class TaskDataSource {
+public class TaskDataSource{
+
     private SQLiteDatabase database;
     private TaskOpenHelper dbHelper;
     private String[] allColumns = { TaskOpenHelper.COLUMN_ID,
