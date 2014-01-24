@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.autobots.queuer.databases.TaskDataSource;
 
+import java.sql.SQLException;
 import java.util.Date;
 
 /**
@@ -19,7 +20,7 @@ public class Task {
     private Date updated_at;
     private boolean complete;
 
-    public Task(Context context, int id, String name, int project_id, int position, boolean complete, Date created_at, Date updated_at) {
+    public Task(Context context, int id, String name, int project_id, int position, boolean complete, Date created_at, Date updated_at) throws SQLException {
         this.id = id;
         this.name = name;
         this.project_id = project_id;

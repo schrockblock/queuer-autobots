@@ -5,6 +5,7 @@ import android.content.Context;
 import com.autobots.queuer.databases.ProjectDataSource;
 
 import java.io.Serializable;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -18,7 +19,7 @@ public class Project implements Serializable {
     private int color;
     private ArrayList<Task> tasks;
 
-    public Project(Context context, int id, String name) {
+    public Project(Context context, int id, String name) throws SQLException {
         this.id = id;
         this.name = name;
 
