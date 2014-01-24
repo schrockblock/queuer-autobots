@@ -17,6 +17,8 @@ import android.widget.Toast;
 
 import com.autobots.queuer.R;
 import com.autobots.queuer.adapters.FeedAdapter;
+import com.autobots.queuer.databases.ProjectDataSource;
+import com.autobots.queuer.databases.TaskDataSource;
 import com.autobots.queuer.managers.LoginManager;
 import com.autobots.queuer.models.Project;
 import com.autobots.queuer.models.Task;
@@ -29,22 +31,22 @@ import java.util.ArrayList;
  */
 public class FeedActivity extends ActionBarActivity {
     private FeedAdapter adapter;
+
     private Context context;
     private ArrayList<Project> emptyProjects = new ArrayList<Project>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        context = this;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feed);
+        ProjectDataSource pds = new ProjectDataSource();
+        TaskDataSource tds = new TaskDataSource(this);
 
-        ArrayList<Project> projects = new ArrayList<Project>(20);
+        ArrayList<Project> projects = pds.getAllProjects();
         for (int i = 0; i < 20; i++) {
             projects.add(new Project(i, "Project " + i,Color.CYAN));
             if(i == 3){
-                projects.get(i).getTaskList().add(new Task(123,"FirstTask"));
-                projects.get(i).getTaskList().add(new Task(12,"SecondTask"));
-                projects.get(i).getTaskList().add(new Task(1,"Last"));
+
             }
         }
 
@@ -82,11 +84,11 @@ public class FeedActivity extends ActionBarActivity {
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
 
-                Project projectClicked = adapter.getItem(i);
-                Intent intent = new Intent(context, ProjectActivity.class);
-                intent.putExtra("EXTRA_PROJECT", projectClicked);
+
+                Intent intent = new Intent(FeedActivity.this, ProjectActivity.class);
+                intent.putExtra("PROJECT", adapter.getItem(position));
                 startActivity(intent);
 
                 //Toast.makeText(FeedActivity.this, "Clicked on item " + adapter.getItem(i), Toast.LENGTH_SHORT).show();
