@@ -33,7 +33,7 @@ public class TaskOpenHelper extends SQLiteOpenHelper {
             + COLUMN_POSITION + "integer,"
             + COLUMN_CREATED + "integer,"
             + COLUMN_UPDATED + "integer,"
-            + COLUMN_COMPLETED + "integer,"
+            + COLUMN_COMPLETED + "integer"
             + ");";
 
     public TaskOpenHelper(Context context) {

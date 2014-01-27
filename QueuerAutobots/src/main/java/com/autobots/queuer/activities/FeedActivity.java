@@ -46,7 +46,6 @@ public class FeedActivity extends ActionBarActivity {
         TaskDataSource tds = new TaskDataSource(this);
 
 
-
         try {
             pds.open();
         } catch (SQLException e) {
@@ -62,6 +61,7 @@ public class FeedActivity extends ActionBarActivity {
         FeedAdapter fAdapter = new FeedAdapter(this,projects);
 
         if(!fAdapter.isEmpty()){
+
             try {
                 tds.open(); // App crashes here.
             } catch (SQLException e) {
