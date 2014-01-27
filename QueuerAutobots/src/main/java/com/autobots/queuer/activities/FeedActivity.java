@@ -3,6 +3,7 @@ package com.autobots.queuer.activities;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -108,7 +109,25 @@ public class FeedActivity extends ActionBarActivity {
         adapter = new FeedAdapter(this, projects);
         listView.setAdapter(adapter);
 
-        //listView.setDismissCallback(new EnhancedListView.OnDismissCallback()) {
+        listView.setDismissCallback(new EnhancedListView.OnDismissCallback() {
+            @Override
+            public EnhancedListView.Undoable onDismiss(EnhancedListView listView, final int position) {
+                if(!adapter.getItem(position).hasTasks())
+                    return null;
+                final Task task = adapter.getItem(position).getTaskList().get(0);
+                adapter.getItem(position).getTaskList().remove(0);
+                adapter.notifyDataSetChanged();
+                return new EnhancedListView.Undoable() {
+                    @Override
+                    public void undo() {
+                        adapter.getItem(position).getTaskList().add(0, task);
+                    }
+                };
+            }
+        });
+
+
+        //}
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -116,10 +135,11 @@ public class FeedActivity extends ActionBarActivity {
 
         //}
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Toast.makeText(FeedActivity.this, "Clicked on item " + adapter.getItem(i), Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(FeedActivity.this, ProjectActivity.class);
+                intent.putExtra("PROJECT", adapter.getItem(position));
+                startActivity(intent);
+
+                //Toast.makeText(FeedActivity.this, "Clicked on item " + adapter.getItem(i), Toast.LENGTH_SHORT).show();
             }
         });
 
