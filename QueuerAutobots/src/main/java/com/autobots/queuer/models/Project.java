@@ -14,13 +14,21 @@ public class Project implements Serializable {
     private String name;
     private int color;
     private ArrayList<Task> tasks;
-
+    private int localId;
     
     public Project(int id, String name, int color) {
         this.id = id;
         this.name = name;
         this.color = color;
 
+    }
+
+    public int getLocalId() {
+        return localId;
+    }
+
+    public void setLocalId(int localId) {
+        this.localId = localId;
     }
 
     public int getId() {
@@ -53,5 +61,9 @@ public class Project implements Serializable {
 
     public void setColor(int color) {
         this.color = color;
+    }
+
+    public boolean hasTasks() {
+        return (!tasks.isEmpty());
     }
 }

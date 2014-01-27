@@ -36,7 +36,7 @@ public class TaskOpenHelper extends SQLiteOpenHelper {
             + COLUMN_COMPLETED + "integer,"
             + ");";
 
-    public MySQLiteHelper(Context context) {
+    public TaskOpenHelper (Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 

@@ -42,7 +42,7 @@ public class FeedActivity extends ActionBarActivity {
         ProjectDataSource pds = new ProjectDataSource(this);
         TaskDataSource tds = new TaskDataSource(this);
 
-        ArrayList<Project> projects = pds.getAllProjects();
+        final ArrayList<Project> projects = pds.getAllProjects();
         for (int i = 0; i < 20; i++) {
             projects.add(new Project(i, "Project " + i,Color.CYAN));
             if(i == 3){
@@ -69,6 +69,7 @@ public class FeedActivity extends ActionBarActivity {
             @Override
             public EnhancedListView.Undoable onDismiss(EnhancedListView listView, final int position) {
                 final Project project;
+                project = projects.get(position);
                 adapter.remove(position);
                 return new EnhancedListView.Undoable() {
                     @Override
@@ -77,7 +78,7 @@ public class FeedActivity extends ActionBarActivity {
 
                     }
 
-                }
+                };
 
             }
 
@@ -92,7 +93,7 @@ public class FeedActivity extends ActionBarActivity {
 
         }});
 
-        //listView.enableSwipeToDismiss();
+        listView.enableSwipeToDismiss();
         listView.enableRearranging();
 
     }
