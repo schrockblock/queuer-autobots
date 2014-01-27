@@ -4,10 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-<<<<<<< HEAD
 import android.graphics.Color;
-=======
->>>>>>> 732bd8858631441d09a641515a1a9965133e4f5f
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
@@ -42,7 +39,7 @@ public class FeedActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feed);
-        ProjectDataSource pds = new ProjectDataSource();
+        ProjectDataSource pds = new ProjectDataSource(this);
         TaskDataSource tds = new TaskDataSource(this);
 
         ArrayList<Project> projects = pds.getAllProjects();
@@ -64,7 +61,7 @@ public class FeedActivity extends ActionBarActivity {
         if(projects.size() != 0)
             findViewById(R.id.msg_noProjects).setVisibility(View.GONE);
 
-        EnhancedListView listView = (EnhancedListView)findViewById(R.id.lv_projects);
+        final EnhancedListView listView = (EnhancedListView)findViewById(R.id.lv_projects);
         adapter = new FeedAdapter(this, projects);
         listView.setAdapter(adapter);
 
@@ -88,23 +85,12 @@ public class FeedActivity extends ActionBarActivity {
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-<<<<<<< HEAD
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-
-
                 Intent intent = new Intent(FeedActivity.this, ProjectActivity.class);
                 intent.putExtra("PROJECT", adapter.getItem(position));
                 startActivity(intent);
 
-=======
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Intent intent = new Intent(FeedActivity.this, ProjectActivity.class);
-                intent.putExtra("project_id", adapter.getItemId(i));
-                startActivity(intent);
->>>>>>> 732bd8858631441d09a641515a1a9965133e4f5f
-                //Toast.makeText(FeedActivity.this, "Clicked on item " + adapter.getItem(i), Toast.LENGTH_SHORT).show();
-            }
-        });
+        }});
 
         //listView.enableSwipeToDismiss();
         listView.enableRearranging();

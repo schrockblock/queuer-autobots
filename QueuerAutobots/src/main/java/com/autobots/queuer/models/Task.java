@@ -1,6 +1,7 @@
 package com.autobots.queuer.models;
 
-<<<<<<< HEAD
+import java.util.Date;
+
 import android.content.Context;
 
 import com.autobots.queuer.databases.TaskDataSource;
@@ -20,7 +21,7 @@ public class Task {
     private Date updated_at;
     private boolean complete;
 
-    public Task(Context context, int id, String name, int project_id, int position, boolean complete, Date created_at, Date updated_at) {
+    public Task(Context context, int id, String name, int project_id, int position, boolean complete, Date created_at, Date updated_at) throws Exception{
         this.id = id;
         this.name = name;
         this.project_id = project_id;
@@ -100,13 +101,5 @@ public class Task {
     public void setComplete(boolean finished) { complete = finished; }
 
     public boolean isComplete() {return complete;}
-=======
-/**
- * Created by mammothbane on 1/17/14.
- */
-public class Task {
-    private String name;
-    private int id;
 
->>>>>>> 732bd8858631441d09a641515a1a9965133e4f5f
 }
