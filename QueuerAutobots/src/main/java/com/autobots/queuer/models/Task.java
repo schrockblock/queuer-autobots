@@ -1,5 +1,6 @@
 package com.autobots.queuer.models;
 
+<<<<<<< HEAD
 import android.content.Context;
 
 import com.autobots.queuer.databases.TaskDataSource;
@@ -99,4 +100,13 @@ public class Task {
     public void setComplete(boolean finished) { complete = finished; }
 
     public boolean isComplete() {return complete;}
+=======
+/**
+ * Created by mammothbane on 1/17/14.
+ */
+public class Task {
+    private String name;
+    private int id;
+
+>>>>>>> 732bd8858631441d09a641515a1a9965133e4f5f
 }

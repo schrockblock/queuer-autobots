@@ -33,7 +33,10 @@
             android:label="Task Manager"
             />
         <activity android:name=".activities.ProjectActivity"
+<<<<<<< HEAD
 
+=======
+>>>>>>> 732bd8858631441d09a641515a1a9965133e4f5f
             />
     </application>
 

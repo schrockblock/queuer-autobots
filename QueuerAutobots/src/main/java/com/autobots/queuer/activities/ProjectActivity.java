@@ -1,6 +1,7 @@
 package com.autobots.queuer.activities;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -13,6 +14,13 @@ import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+=======
+import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
+import android.view.Menu;
+
+import com.autobots.queuer.R;
+>>>>>>> 732bd8858631441d09a641515a1a9965133e4f5f
 
 /**
  * Created by mammothbane on 1/17/14.
@@ -21,12 +29,19 @@ public class ProjectActivity extends ActionBarActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+<<<<<<< HEAD
         return super.onCreateOptionsMenu(menu);
+=======
+        getMenuInflater().inflate(R.menu.menu_project, menu);
+        //return super.onCreateOptionsMenu(menu);
+        return true;
+>>>>>>> 732bd8858631441d09a641515a1a9965133e4f5f
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+<<<<<<< HEAD
         setContentView(R.layout.project_feed);
         TextView tView = (TextView) findViewById(R.id.no_tasks);
         tView.setVisibility(View.GONE);
@@ -76,4 +91,10 @@ public class ProjectActivity extends ActionBarActivity {
 }
 
 
+=======
+    }
+
+
+}
+>>>>>>> 732bd8858631441d09a641515a1a9965133e4f5f
 

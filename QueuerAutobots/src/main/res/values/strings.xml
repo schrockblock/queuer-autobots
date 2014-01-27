@@ -20,7 +20,10 @@
     <string name="action_logout">Logout</string>
     <string name="action_new_project">New Project</string>
     <string name="action_new_task">New Task</string>
+<<<<<<< HEAD
     <string name="no_projects">There are no projects.</string>
+=======
+>>>>>>> 732bd8858631441d09a641515a1a9965133e4f5f
 
 
 </resources>

@@ -4,7 +4,10 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+<<<<<<< HEAD
 import android.graphics.Color;
+=======
+>>>>>>> 732bd8858631441d09a641515a1a9965133e4f5f
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
@@ -65,13 +68,27 @@ public class FeedActivity extends ActionBarActivity {
         adapter = new FeedAdapter(this, projects);
         listView.setAdapter(adapter);
 
-        //listView.setDismissCallback(new EnhancedListView.OnDismissCallback()) {
+        listView.setDismissCallback(new EnhancedListView.OnDismissCallback(){
+            @Override
+            public EnhancedListView.Undoable onDismiss(EnhancedListView listView, final int position) {
+                final Project project;
+                adapter.remove(position);
+                return new EnhancedListView.Undoable() {
+                    @Override
+                    public void undo() {
+                        adapter.insert(project, position);
 
+                    }
 
-        //}
+                }
+
+            }
+
+        });
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
+<<<<<<< HEAD
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
 
 
@@ -79,6 +96,12 @@ public class FeedActivity extends ActionBarActivity {
                 intent.putExtra("PROJECT", adapter.getItem(position));
                 startActivity(intent);
 
+=======
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent intent = new Intent(FeedActivity.this, ProjectActivity.class);
+                intent.putExtra("project_id", adapter.getItemId(i));
+                startActivity(intent);
+>>>>>>> 732bd8858631441d09a641515a1a9965133e4f5f
                 //Toast.makeText(FeedActivity.this, "Clicked on item " + adapter.getItem(i), Toast.LENGTH_SHORT).show();
             }
         });
