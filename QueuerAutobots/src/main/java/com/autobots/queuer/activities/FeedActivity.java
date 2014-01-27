@@ -105,7 +105,7 @@ public class FeedActivity extends ActionBarActivity {
 
         if(projects.size() != 0) findViewById(R.id.msg_noProjects).setVisibility(View.GONE);
 
-        EnhancedListView listView = (EnhancedListView)findViewById(R.id.lv_projects);
+        final EnhancedListView listView = (EnhancedListView)findViewById(R.id.lv_projects);
         adapter = new FeedAdapter(this, projects);
         listView.setAdapter(adapter);
 
