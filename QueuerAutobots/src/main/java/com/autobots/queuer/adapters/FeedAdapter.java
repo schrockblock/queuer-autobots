@@ -27,6 +27,8 @@ public class FeedAdapter extends BaseAdapter implements RearrangementListener {
         this.projects = projects;
     }
 
+    public void insert()
+
     public void remove(int position) {
         projects.remove(position);
         notifyDataSetChanged();

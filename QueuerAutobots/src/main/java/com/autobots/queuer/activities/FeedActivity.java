@@ -40,10 +40,23 @@ public class FeedActivity extends ActionBarActivity {
         adapter = new FeedAdapter(this, projects);
         listView.setAdapter(adapter);
 
-        //listView.setDismissCallback(new EnhancedListView.OnDismissCallback()) {
+        listView.setDismissCallback(new EnhancedListView.OnDismissCallback(){
+            @Override
+            public EnhancedListView.Undoable onDismiss(EnhancedListView listView, final int position) {
+                final Project project;
+                adapter.remove(position);
+                return new EnhancedListView.Undoable() {
+                    @Override
+                    public void undo() {
+                        adapter.insert(project, position);
 
+                    }
 
-        //}
+                }
+
+            }
+
+        });
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
