@@ -79,8 +79,8 @@ public class FeedActivity extends ActionBarActivity {
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
-                Task taskOne = tds.createTask("Task1", pAdapter.getItemId(0),0,0, false );
-                Task taskTwo = tds.createTask("Task2", pAdapter.getItemId(0),1,1, false );
+                Task taskOne = tds.createTask("Task1", fAdapter.getItemId(0),0,0, false );
+                Task taskTwo = tds.createTask("Task2", fAdapter.getItemId(0),1,1, false );
                 tasks = tds.getProjectTasks(fAdapter.getItemId(0));
                 tds.close();
                 fAdapter.getItem(0).setTaskList(tasks);
