@@ -1,26 +1,44 @@
 package com.autobots.queuer.models;
 
-import android.support.v7.appcompat.R;
+import android.content.Context;
+
+import com.autobots.queuer.databases.ProjectDataSource;
 
 import java.io.Serializable;
-import java.security.PrivateKey;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Created by mammothbane on 1/17/14.
  */
 public class Project implements Serializable {
     private int id;
+    private int localId;
     private String name;
     private int color;
     private ArrayList<Task> tasks;
 
-    
-    public Project(int id, String name, int color) {
+    public Project(Context context, int id, String name) throws SQLException {
         this.id = id;
         this.name = name;
-        this.color = color;
 
+        ProjectDataSource projectDataSource = new ProjectDataSource(context);
+        projectDataSource.open();
+        localId = projectDataSource.createProject(name, 0, id, new Date(), new Date()).localId;
+        projectDataSource.close();
+    }
+
+    public Project(){
+
+    }
+
+    public int getLocalId() {
+        return localId;
+    }
+
+    public void setLocalId(int localId) {
+        this.localId = localId;
     }
 
     public int getId() {
@@ -43,15 +61,13 @@ public class Project implements Serializable {
         return color;
     }
 
-    public ArrayList<Task> getTasks() {
-        return tasks;
-    }
-
-    public void setTasks(ArrayList<Task> tasks) {
-        this.tasks = tasks;
-    }
-
     public void setColor(int color) {
         this.color = color;
     }
+
+    public boolean hasTasks() { return !tasks.isEmpty();}
+
+    public ArrayList<Task> getTaskList() { return tasks; }
+
+    public void setTaskList(ArrayList<Task> tasks) { this.tasks = tasks;}
 }

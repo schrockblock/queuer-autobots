@@ -101,7 +101,7 @@ public class ProjectDataSource {
             project.setLocalId(cursor.getInt(cursor.getColumnIndex(ProjectOpenHelper.COLUMN_ID)));
             project.setId(cursor.getInt(cursor.getColumnIndex(ProjectOpenHelper.COLUMN_SERVER_ID)));
             project.setColor(cursor.getInt(cursor.getColumnIndex(ProjectOpenHelper.COLUMN_COLOR)));
-            project.setTitle(cursor.getString(cursor.getColumnIndex(ProjectOpenHelper.COLUMN_TITLE)));
+            project.setName(cursor.getString(cursor.getColumnIndex(ProjectOpenHelper.COLUMN_TITLE)));
             return project;
         }
     }

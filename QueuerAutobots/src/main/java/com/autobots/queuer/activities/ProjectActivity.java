@@ -21,6 +21,7 @@ import com.autobots.queuer.models.Project;
 import com.autobots.queuer.models.Task;
 import com.autobots.queuer.views.EnhancedListView;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**
@@ -48,7 +49,11 @@ public class ProjectActivity extends ActionBarActivity {
 
 
         TaskDataSource tds = new TaskDataSource(this);
-        tds.open();
+        try {
+            tds.open();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         ArrayList<Task> tasks = tds.getProjectTasks(projectId);
         tds.close();
 

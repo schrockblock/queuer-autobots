@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.autobots.queuer.R;
 import com.autobots.queuer.adapters.FeedAdapter;
+import com.autobots.queuer.adapters.ProjectAdapter;
 import com.autobots.queuer.databases.ProjectDataSource;
 import com.autobots.queuer.databases.TaskDataSource;
 import com.autobots.queuer.managers.LoginManager;
@@ -24,7 +25,9 @@ import com.autobots.queuer.models.Project;
 import com.autobots.queuer.models.Task;
 import com.autobots.queuer.views.EnhancedListView;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Created by mammothbane on 1/17/14.
@@ -39,16 +42,52 @@ public class FeedActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feed);
-        ProjectDataSource pds = new ProjectDataSource();
+        ProjectDataSource pds = new ProjectDataSource(this);
         TaskDataSource tds = new TaskDataSource(this);
 
-        ArrayList<Project> projects = pds.getAllProjects();
-        for (int i = 0; i < 20; i++) {
-            projects.add(new Project(i, "Project " + i,Color.CYAN));
-            if(i == 3){
 
-            }
+        try {
+            pds.open();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
+        ArrayList<Project> projects = pds.getAllProjects();
+        if(projects.isEmpty()){
+            pds.createProject("Project1", Color.CYAN, 0, new Date(1,1,1), new Date(1,1,1) );
+            projects = pds.getAllProjects();
+        }
+        pds.close();
+
+        FeedAdapter fAdapter = new FeedAdapter(this,projects);
+
+        if(!fAdapter.isEmpty()){
+
+            try {
+                tds.open(); // App crashes here.
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            ArrayList<Task> tasks = tds.getProjectTasks(fAdapter.getItemId(0));
+            tds.close();
+            ProjectAdapter pAdapter = new ProjectAdapter(this, tasks);
+            if(pAdapter.isEmpty()){
+                /*
+                ** Not sure if this is going to work. Still not tested.
+                */
+                try {
+                    tds.open();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                Task taskOne = tds.createTask("Task1", pAdapter.getItemId(0),0,0, false );
+                Task taskTwo = tds.createTask("Task2", pAdapter.getItemId(0),1,1, false );
+                tasks = tds.getProjectTasks(fAdapter.getItemId(0));
+                tds.close();
+                fAdapter.getItem(0).setTaskList(tasks);
+            }
+
+        }
+
 
         for(int k = 0; k < projects.size(); k++){
             if(!projects.get(k).hasTasks()){
@@ -58,8 +97,7 @@ public class FeedActivity extends ActionBarActivity {
             }
         }
 
-        if(projects.size() != 0)
-            findViewById(R.id.msg_noProjects).setVisibility(View.GONE);
+        if(projects.size() != 0) findViewById(R.id.msg_noProjects).setVisibility(View.GONE);
 
         EnhancedListView listView = (EnhancedListView)findViewById(R.id.lv_projects);
         adapter = new FeedAdapter(this, projects);
