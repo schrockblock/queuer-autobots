@@ -58,4 +58,12 @@ public class Project implements Serializable {
     public ArrayList<Task> getTaskList() { return tasks; }
 
     public void setTaskList(ArrayList<Task> tasks) { this.tasks = tasks;}
+
+    public int getLocalId() {
+        return localId;
+    }
+
+    public void setLocalId(int localId) {
+        this.localId = localId;
+    }
 }
