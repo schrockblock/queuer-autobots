@@ -118,9 +118,9 @@ public class ProjectActivity extends ActionBarActivity {
 
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_settings:
+            /*case R.id.action_settings:
                 //open settings activity
-                return true;
+                return true;*/
             case R.id.action_logout:
                 new AlertDialog.Builder(this)
                         .setTitle("Logout")
