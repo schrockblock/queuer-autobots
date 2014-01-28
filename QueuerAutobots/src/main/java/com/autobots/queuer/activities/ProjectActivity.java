@@ -17,6 +17,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 
 import com.autobots.queuer.R;
+import com.autobots.queuer.adapters.FeedAdapter;
 import com.autobots.queuer.adapters.ProjectAdapter;
 import com.autobots.queuer.databases.TaskDataSource;
 import com.autobots.queuer.models.Project;
@@ -31,13 +32,9 @@ import java.util.ArrayList;
  */
 public class ProjectActivity extends ActionBarActivity {
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_project, menu);
-        return super.onCreateOptionsMenu(menu);
+    private ProjectAdapter adapter = ;
 
         //return super.onCreateOptionsMenu(menu);
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +68,22 @@ public class ProjectActivity extends ActionBarActivity {
             tView.setVisibility(View.VISIBLE);
         }
 
+        listView.setDismissCallback(new EnhancedListView.OnDismissCallback() {
+            @Override
+            public EnhancedListView.Undoable onDismiss(EnhancedListView listView, final int position) {
+                if(!adapter.getItem(position).hasTasks())
+                    return null;
+                final Task task = adapter.getItem(position).getTaskList().get(0);
+                adapter.getItem(position).getTaskList().remove(0);
+                adapter.notifyDataSetChanged();
+                return new EnhancedListView.Undoable() {
+                    @Override
+                    public void undo() {
+                        adapter.getItem(position).getTaskList().add(0, task);
+                    }
+                };
+            }
+        });
 
         //listView.setDismissCallback(new EnhancedListView.OnDismissCallback()) {
 
@@ -88,4 +101,45 @@ public class ProjectActivity extends ActionBarActivity {
         listView.enableRearranging();
 
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_feed, menu);
+        return true;
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_settings:
+                //open settings activity
+                return true;
+            case R.id.action_logout:
+                new AlertDialog.Builder(this)
+                        .setTitle("Logout")
+                        .setMessage("Are you sure you want to logout?")
+                        .setNegativeButton(android.R.string.no, null)
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface arg0, int arg1) {
+                                finish();
+                                com.autobots.queuer.managers.LoginManager.setLoggedIn(false);
+                            }
+                        }).create().show();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
+    }
+
 }
+
+
+

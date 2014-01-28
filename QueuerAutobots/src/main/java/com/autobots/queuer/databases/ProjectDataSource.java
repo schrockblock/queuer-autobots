@@ -5,7 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.autobots.queuer.QueuerApplication;
 import com.autobots.queuer.models.Project;
 
 import java.sql.SQLException;
@@ -40,7 +39,7 @@ public class ProjectDataSource {
             dbHelper.close();
         }
 
-        public Project createProject(String title, int color, int serverId, Date created, Date updated) throws SQLException {
+        public Project createProject(String title, int color, int serverId, Date created, Date updated) {
             ContentValues values = new ContentValues();
             values.put(ProjectOpenHelper.COLUMN_SERVER_ID, serverId);
             values.put(ProjectOpenHelper.COLUMN_COLOR, color);
@@ -97,8 +96,8 @@ public class ProjectDataSource {
             return projects;
         }
 
-        private Project cursorToProject(Cursor cursor) throws SQLException {
-            Project project = new Project(, 0, "");
+        private Project cursorToProject(Cursor cursor) {
+            Project project = new Project();
             project.setLocalId(cursor.getInt(cursor.getColumnIndex(ProjectOpenHelper.COLUMN_ID)));
             project.setId(cursor.getInt(cursor.getColumnIndex(ProjectOpenHelper.COLUMN_SERVER_ID)));
             project.setColor(cursor.getInt(cursor.getColumnIndex(ProjectOpenHelper.COLUMN_COLOR)));
