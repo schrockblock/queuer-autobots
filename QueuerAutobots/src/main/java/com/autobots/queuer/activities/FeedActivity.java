@@ -94,7 +94,6 @@ public class FeedActivity extends ActionBarActivity {
 
         }
 
-
         for(int k = 0; k < projects.size(); k++){
             if(!projects.get(k).hasTasks()){
                 emptyProjects.add(projects.get(k));
@@ -126,14 +125,10 @@ public class FeedActivity extends ActionBarActivity {
             }
         });
 
-
-        //}
-
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
 
-        //}
 
                 Intent intent = new Intent(FeedActivity.this, ProjectActivity.class);
                 intent.putExtra("PROJECT", adapter.getItem(position));

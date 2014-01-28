@@ -29,18 +29,6 @@ public class Project implements Serializable {
         projectDataSource.close();
     }
 
-    public Project(){
-
-    }
-
-    public int getLocalId() {
-        return localId;
-    }
-
-    public void setLocalId(int localId) {
-        this.localId = localId;
-    }
-
     public int getId() {
         return id;
     }

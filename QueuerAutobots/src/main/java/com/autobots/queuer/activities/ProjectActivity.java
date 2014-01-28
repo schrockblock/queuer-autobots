@@ -12,9 +12,11 @@ import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
+import android.view.Menu;
 
 import com.autobots.queuer.R;
-import com.autobots.queuer.adapters.FeedAdapter;
 import com.autobots.queuer.adapters.ProjectAdapter;
 import com.autobots.queuer.databases.TaskDataSource;
 import com.autobots.queuer.models.Project;
@@ -29,7 +31,13 @@ import java.util.ArrayList;
  */
 public class ProjectActivity extends ActionBarActivity {
 
-    private ProjectAdapter adapter;
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_project, menu);
+        return super.onCreateOptionsMenu(menu);
+
+        //return super.onCreateOptionsMenu(menu);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,10 +52,6 @@ public class ProjectActivity extends ActionBarActivity {
         LinearLayout layout = (LinearLayout) findViewById(R.id.project_feed);
         layout.setBackgroundColor(project.getColor());
 
-
-
-
-
         TaskDataSource tds = new TaskDataSource(this);
         try {
             tds.open();
@@ -58,7 +62,7 @@ public class ProjectActivity extends ActionBarActivity {
         tds.close();
 
         EnhancedListView listView = (EnhancedListView)findViewById(R.id.lv_tasks);
-        adapter = new ProjectAdapter(this, tasks);
+        ProjectAdapter adapter = new ProjectAdapter(this, tasks);
         listView.setAdapter(adapter);
 
         if (adapter.isEmpty()){
@@ -85,6 +89,3 @@ public class ProjectActivity extends ActionBarActivity {
 
     }
 }
-
-
-

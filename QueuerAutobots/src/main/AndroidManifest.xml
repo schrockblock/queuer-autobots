@@ -19,24 +19,19 @@
         <activity
             android:name="com.autobots.queuer.activities.LoginActivity"
             android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER"
+                    />
+            </intent-filter>
         </activity>
         <activity android:name=".activities.AccountActivity"
             android:label="@string/acct_title"
             />
-
         <activity android:name=".activities.FeedActivity"
-            android:label="Task Manager">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
-
-            </intent-filter>
-
-         </activity>
-
-
-
+            android:label="Task Manager"
+            />
         <activity android:name=".activities.ProjectActivity"
 
             />
