@@ -83,8 +83,16 @@ public class FeedActivity extends ActionBarActivity {
                 Task taskTwo = tds.createTask("Task2", fAdapter.getItemId(0),1,1, false );
                 tasks = tds.getProjectTasks(fAdapter.getItemId(0));
                 tds.close();
-                fAdapter.getItem(0).setTaskList(tasks);
+
             }
+            try {
+                tds.open(); // App crashes here.
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            tasks = tds.getProjectTasks(fAdapter.getItemId(0));
+            tds.close();
+            fAdapter.getItem(0).setTaskList(tasks);
 
         }
 

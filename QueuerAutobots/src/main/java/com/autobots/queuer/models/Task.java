@@ -4,13 +4,14 @@ import android.content.Context;
 
 import com.autobots.queuer.databases.TaskDataSource;
 
+import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.Date;
 
 /**
  * Created by Moseph on 1/19/14.
  */
-public class Task {
+public class Task implements Serializable {
     private int id;
     private String name;
     private int project_id;
