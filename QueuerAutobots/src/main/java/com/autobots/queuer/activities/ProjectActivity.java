@@ -32,7 +32,7 @@ import java.util.ArrayList;
  */
 public class ProjectActivity extends ActionBarActivity {
 
-    private ProjectAdapter adapter = ;
+    private ProjectAdapter adapter;
 
         //return super.onCreateOptionsMenu(menu);
 
@@ -68,7 +68,7 @@ public class ProjectActivity extends ActionBarActivity {
             tView.setVisibility(View.VISIBLE);
         }
 
-        listView.setDismissCallback(new EnhancedListView.OnDismissCallback() {
+        /*listView.setDismissCallback(new EnhancedListView.OnDismissCallback() {
             @Override
             public EnhancedListView.Undoable onDismiss(EnhancedListView listView, final int position) {
                 if(!adapter.getItem(position).hasTasks())
@@ -83,7 +83,7 @@ public class ProjectActivity extends ActionBarActivity {
                     }
                 };
             }
-        });
+        });*/
 
         //listView.setDismissCallback(new EnhancedListView.OnDismissCallback()) {
 
@@ -128,8 +128,8 @@ public class ProjectActivity extends ActionBarActivity {
                         .setNegativeButton(android.R.string.no, null)
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface arg0, int arg1) {
-                                finish();
                                 com.autobots.queuer.managers.LoginManager.setLoggedIn(false);
+                                startActivity(new Intent(ProjectActivity.this, LoginActivity.class));
                             }
                         }).create().show();
                 return true;

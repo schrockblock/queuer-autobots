@@ -37,13 +37,16 @@ public class FeedActivity extends ActionBarActivity {
 
     private Context context;
     private ArrayList<Project> emptyProjects = new ArrayList<Project>();
+    ProjectDataSource pds = new ProjectDataSource(this);
+    TaskDataSource tds = new TaskDataSource(this);
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feed);
-        ProjectDataSource pds = new ProjectDataSource(this);
-        TaskDataSource tds = new TaskDataSource(this);
+        setTitle("Task Manager");
+
 
 
         try {
@@ -143,6 +146,16 @@ public class FeedActivity extends ActionBarActivity {
         listView.enableSwipeToDismiss();
         listView.enableRearranging();
 
+
+    }
+
+    @Override
+    public void onResume() {
+        if (!LoginManager.isLoggedIn()) {
+            startActivity(new Intent(FeedActivity.this, LoginActivity.class));
+        }
+
+        super.onResume();
     }
 
     @Override
@@ -180,8 +193,8 @@ public class FeedActivity extends ActionBarActivity {
                         .setNegativeButton(android.R.string.no, null)
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface arg0, int arg1) {
-                                finish();
                                 com.autobots.queuer.managers.LoginManager.setLoggedIn(false);
+                                startActivity(new Intent(FeedActivity.this, LoginActivity.class));
                             }
                         }).create().show();
                 return true;
