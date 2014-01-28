@@ -59,7 +59,7 @@ public class ProjectActivity extends ActionBarActivity {
         tds.close();
 
         EnhancedListView listView = (EnhancedListView)findViewById(R.id.lv_tasks);
-        ProjectAdapter adapter = new ProjectAdapter(this, tasks);
+        adapter = new ProjectAdapter(this, tasks);
         listView.setAdapter(adapter);
 
         if (adapter.isEmpty()){
@@ -68,22 +68,22 @@ public class ProjectActivity extends ActionBarActivity {
             tView.setVisibility(View.VISIBLE);
         }
 
-        /*listView.setDismissCallback(new EnhancedListView.OnDismissCallback() {
+        listView.setDismissCallback(new EnhancedListView.OnDismissCallback() {
             @Override
             public EnhancedListView.Undoable onDismiss(EnhancedListView listView, final int position) {
-                if(!adapter.getItem(position).hasTasks())
+                if(adapter.isEmpty())
                     return null;
-                final Task task = adapter.getItem(position).getTaskList().get(0);
-                adapter.getItem(position).getTaskList().remove(0);
+                final Task task = adapter.getItem(position);
+                adapter.remove(position);
                 adapter.notifyDataSetChanged();
                 return new EnhancedListView.Undoable() {
                     @Override
                     public void undo() {
-                        adapter.getItem(position).getTaskList().add(0, task);
+                        adapter.insert(task, position);
                     }
                 };
             }
-        });*/
+        });
 
         //listView.setDismissCallback(new EnhancedListView.OnDismissCallback()) {
 
@@ -97,7 +97,7 @@ public class ProjectActivity extends ActionBarActivity {
             }
         });
 
-        //listView.enableSwipeToDismiss();
+        listView.enableSwipeToDismiss();
         listView.enableRearranging();
 
     }
