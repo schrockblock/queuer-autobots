@@ -71,9 +71,7 @@ public class FeedActivity extends ActionBarActivity {
             tds.close();
             ProjectAdapter pAdapter = new ProjectAdapter(this, tasks);
             if(pAdapter.isEmpty()){
-                /*
-                ** Not sure if this is going to work. Still not tested.
-                */
+
                 try {
                     tds.open();
                 } catch (SQLException e) {
@@ -86,7 +84,7 @@ public class FeedActivity extends ActionBarActivity {
 
             }
             try {
-                tds.open(); // App crashes here.
+                tds.open();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -141,7 +139,7 @@ public class FeedActivity extends ActionBarActivity {
             }
         });
 
-        //listView.enableSwipeToDismiss();
+        listView.enableSwipeToDismiss();
         listView.enableRearranging();
 
     }
