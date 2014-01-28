@@ -71,20 +71,26 @@ public class FeedActivity extends ActionBarActivity {
             tds.close();
             ProjectAdapter pAdapter = new ProjectAdapter(this, tasks);
             if(pAdapter.isEmpty()){
-                /*
-                ** Not sure if this is going to work. Still not tested.
-                */
+
                 try {
                     tds.open();
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
-                Task taskOne = tds.createTask("Task1", pAdapter.getItemId(0),0,0, false );
-                Task taskTwo = tds.createTask("Task2", pAdapter.getItemId(0),1,1, false );
+                Task taskOne = tds.createTask("Task1", fAdapter.getItemId(0),0,0, false );
+                Task taskTwo = tds.createTask("Task2", fAdapter.getItemId(0),1,1, false );
                 tasks = tds.getProjectTasks(fAdapter.getItemId(0));
                 tds.close();
-                fAdapter.getItem(0).setTaskList(tasks);
+
             }
+            try {
+                tds.open();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            tasks = tds.getProjectTasks(fAdapter.getItemId(0));
+            tds.close();
+            fAdapter.getItem(0).setTaskList(tasks);
 
         }
 
@@ -133,7 +139,7 @@ public class FeedActivity extends ActionBarActivity {
             }
         });
 
-        //listView.enableSwipeToDismiss();
+        listView.enableSwipeToDismiss();
         listView.enableRearranging();
 
     }

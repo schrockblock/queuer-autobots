@@ -102,6 +102,7 @@ public class TaskDataSource{
     public ArrayList<Task> getProjectTasks(long project_id){
         ArrayList<Task> projectTasks = new ArrayList<Task>();
 
+
         Cursor cursor = database.query(TaskOpenHelper.TABLE_TASKS,
                 allColumns, TaskOpenHelper.COLUMN_PROJECT_SERVER_ID + " = ?",
                 new String[] {Long.toString(project_id)}, null,null,null);

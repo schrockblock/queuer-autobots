@@ -27,14 +27,14 @@ public class TaskOpenHelper extends SQLiteOpenHelper {
     private static final String DATABASE_CREATE = "create table "
             + TABLE_TASKS + "(" + COLUMN_ID
             + " integer primary key autoincrement, "
-            + COLUMN_SERVER_ID + "integer,"
-            + COLUMN_PROJECT_SERVER_ID + "integer,"
+            + COLUMN_SERVER_ID + " integer,"
+            + COLUMN_PROJECT_SERVER_ID + " integer,"
             + COLUMN_TEXT + " text not null,"
-            + COLUMN_POSITION + "integer,"
-            + COLUMN_CREATED + "integer,"
-            + COLUMN_UPDATED + "integer,"
-            + COLUMN_COMPLETED + "integer"
-            + ");";
+            + COLUMN_POSITION + " integer,"
+            + COLUMN_CREATED + " integer,"
+            + COLUMN_UPDATED + " integer,"
+            + COLUMN_COMPLETED + " integer"
+            + " );";
 
     public TaskOpenHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
