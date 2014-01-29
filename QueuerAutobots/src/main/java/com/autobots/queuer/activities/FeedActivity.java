@@ -36,6 +36,7 @@ public class FeedActivity extends ActionBarActivity {
     private FeedAdapter adapter;
 
     private Context context;
+    private ArrayList<Project> projects;
     private ArrayList<Project> emptyProjects = new ArrayList<Project>();
     ProjectDataSource pds = new ProjectDataSource(this);
     TaskDataSource tds = new TaskDataSource(this);
@@ -54,7 +55,7 @@ public class FeedActivity extends ActionBarActivity {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        ArrayList<Project> projects = pds.getAllProjects();
+        projects = pds.getAllProjects();
         if(projects.isEmpty()){
             pds.createProject("Project1", Color.CYAN, 0, new Date(1,1,1), new Date(1,1,1) );
             projects = pds.getAllProjects();
@@ -120,6 +121,7 @@ public class FeedActivity extends ActionBarActivity {
                 final Task task = adapter.getItem(position).getTaskList().get(0);
                 adapter.getItem(position).getTaskList().remove(0);
                 adapter.notifyDataSetChanged();
+                checkForEmpty(position);
                 return new EnhancedListView.Undoable() {
                     @Override
                     public void undo() {
@@ -202,6 +204,15 @@ public class FeedActivity extends ActionBarActivity {
                 return super.onOptionsItemSelected(item);
         }
 
+    }
+
+    public void checkForEmpty(int pos){
+        if(!projects.get(pos).hasTasks()){
+           emptyProjects.add(projects.get(pos));
+           projects.remove(pos);
+        }
+
+        if(projects.size() != 0) findViewById(R.id.msg_noProjects).setVisibility(View.GONE);
     }
 
 }
