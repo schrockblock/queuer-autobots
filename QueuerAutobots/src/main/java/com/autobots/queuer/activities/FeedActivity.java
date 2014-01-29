@@ -38,6 +38,7 @@ public class FeedActivity extends ActionBarActivity {
     private Context context;
     private ArrayList<Project> projects;
     private ArrayList<Project> emptyProjects = new ArrayList<Project>();
+    private boolean isLast = false;
     ProjectDataSource pds = new ProjectDataSource(this);
     TaskDataSource tds = new TaskDataSource(this);
 
@@ -116,15 +117,22 @@ public class FeedActivity extends ActionBarActivity {
         listView.setDismissCallback(new EnhancedListView.OnDismissCallback() {
             @Override
             public EnhancedListView.Undoable onDismiss(EnhancedListView listView, final int position) {
-                if(!adapter.getItem(position).hasTasks())
-                    return null;
+                //if(!adapter.getItem(position).hasTasks())
+                //    return null;
                 final Task task = adapter.getItem(position).getTaskList().get(0);
                 adapter.getItem(position).getTaskList().remove(0);
+                if(!adapter.getItem(position).hasTasks()) isLast = true;  //if the project has no more tasks, set isLast to true
                 adapter.notifyDataSetChanged();
                 checkForEmpty(position);
                 return new EnhancedListView.Undoable() {
                     @Override
                     public void undo() {
+                        if(getIsLast()){ //if the project was empty, move it from emptyProjects to projects in the same position as previously
+                            projects.add(position,emptyProjects.get(emptyProjects.size()-1));
+                            emptyProjects.remove(emptyProjects.size()-1);
+                            adapter.notifyDataSetChanged();
+                            findViewById(R.id.msg_noProjects).setVisibility(View.GONE);
+                        }
                         adapter.getItem(position).getTaskList().add(0, task);
                     }
                 };
@@ -212,7 +220,11 @@ public class FeedActivity extends ActionBarActivity {
            projects.remove(pos);
         }
 
-        if(projects.size() != 0) findViewById(R.id.msg_noProjects).setVisibility(View.GONE);
+        if(projects.size() == 0) findViewById(R.id.msg_noProjects).setVisibility(View.VISIBLE);
+    }
+
+    public boolean getIsLast(){
+        return isLast;
     }
 
 }
