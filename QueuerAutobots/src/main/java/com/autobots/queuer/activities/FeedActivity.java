@@ -36,7 +36,9 @@ public class FeedActivity extends ActionBarActivity {
     private FeedAdapter adapter;
 
     private Context context;
+    private ArrayList<Project> projects;
     private ArrayList<Project> emptyProjects = new ArrayList<Project>();
+    private boolean isLast = false;
     ProjectDataSource pds = new ProjectDataSource(this);
     TaskDataSource tds = new TaskDataSource(this);
 
@@ -54,7 +56,7 @@ public class FeedActivity extends ActionBarActivity {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        ArrayList<Project> projects = pds.getAllProjects();
+        projects = pds.getAllProjects();
         if(projects.isEmpty()){
             pds.createProject("Project1", Color.CYAN, 0, new Date(1,1,1), new Date(1,1,1) );
             projects = pds.getAllProjects();
@@ -115,14 +117,22 @@ public class FeedActivity extends ActionBarActivity {
         listView.setDismissCallback(new EnhancedListView.OnDismissCallback() {
             @Override
             public EnhancedListView.Undoable onDismiss(EnhancedListView listView, final int position) {
-                if(!adapter.getItem(position).hasTasks())
-                    return null;
+                //if(!adapter.getItem(position).hasTasks())
+                //    return null;
                 final Task task = adapter.getItem(position).getTaskList().get(0);
                 adapter.getItem(position).getTaskList().remove(0);
+                if(!adapter.getItem(position).hasTasks()) isLast = true;  //if the project has no more tasks, set isLast to true
                 adapter.notifyDataSetChanged();
+                checkForEmpty(position);
                 return new EnhancedListView.Undoable() {
                     @Override
                     public void undo() {
+                        if(getIsLast()){ //if the project was empty, move it from emptyProjects to projects in the same position as previously
+                            projects.add(position,emptyProjects.get(emptyProjects.size()-1));
+                            emptyProjects.remove(emptyProjects.size()-1);
+                            adapter.notifyDataSetChanged();
+                            findViewById(R.id.msg_noProjects).setVisibility(View.GONE);
+                        }
                         adapter.getItem(position).getTaskList().add(0, task);
                     }
                 };
@@ -202,6 +212,18 @@ public class FeedActivity extends ActionBarActivity {
                 return super.onOptionsItemSelected(item);
         }
 
+    }
+
+    public void checkForEmpty(int pos){
+        if(!projects.get(pos).hasTasks()){
+           emptyProjects.add(projects.get(pos));
+           projects.remove(pos);
+        }
+        if(projects.size() == 0) findViewById(R.id.msg_noProjects).setVisibility(View.VISIBLE);
+    }
+
+    public boolean getIsLast(){
+        return isLast;
     }
 
 }
