@@ -219,7 +219,6 @@ public class FeedActivity extends ActionBarActivity {
            emptyProjects.add(projects.get(pos));
            projects.remove(pos);
         }
-
         if(projects.size() == 0) findViewById(R.id.msg_noProjects).setVisibility(View.VISIBLE);
     }
 
