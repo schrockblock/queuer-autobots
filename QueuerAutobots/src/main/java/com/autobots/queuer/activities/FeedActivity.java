@@ -37,13 +37,16 @@ public class FeedActivity extends ActionBarActivity {
 
     private Context context;
     private ArrayList<Project> emptyProjects = new ArrayList<Project>();
+    ProjectDataSource pds = new ProjectDataSource(this);
+    TaskDataSource tds = new TaskDataSource(this);
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feed);
-        ProjectDataSource pds = new ProjectDataSource(this);
-        TaskDataSource tds = new TaskDataSource(this);
+        setTitle("Task Manager");
+
 
 
         try {
@@ -105,7 +108,7 @@ public class FeedActivity extends ActionBarActivity {
 
         if(projects.size() != 0) findViewById(R.id.msg_noProjects).setVisibility(View.GONE);
 
-        EnhancedListView listView = (EnhancedListView)findViewById(R.id.lv_projects);
+        final EnhancedListView listView = (EnhancedListView)findViewById(R.id.lv_projects);
         adapter = new FeedAdapter(this, projects);
         listView.setAdapter(adapter);
 
@@ -133,6 +136,7 @@ public class FeedActivity extends ActionBarActivity {
 
                 Intent intent = new Intent(FeedActivity.this, ProjectActivity.class);
                 intent.putExtra("PROJECT", adapter.getItem(position));
+                //intent.putExtra("ADAPTER", )
                 startActivity(intent);
 
                 //Toast.makeText(FeedActivity.this, "Clicked on item " + adapter.getItem(i), Toast.LENGTH_SHORT).show();
@@ -142,6 +146,16 @@ public class FeedActivity extends ActionBarActivity {
         listView.enableSwipeToDismiss();
         listView.enableRearranging();
 
+
+    }
+
+    @Override
+    public void onResume() {
+        if (!LoginManager.isLoggedIn()) {
+            startActivity(new Intent(FeedActivity.this, LoginActivity.class));
+        }
+
+        super.onResume();
     }
 
     @Override
@@ -169,9 +183,9 @@ public class FeedActivity extends ActionBarActivity {
 
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_settings:
+            /*case R.id.action_settings:
                 //open settings activity
-                return true;
+                return true;*/
             case R.id.action_logout:
                 new AlertDialog.Builder(this)
                         .setTitle("Logout")
@@ -179,8 +193,8 @@ public class FeedActivity extends ActionBarActivity {
                         .setNegativeButton(android.R.string.no, null)
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface arg0, int arg1) {
-                                finish();
                                 com.autobots.queuer.managers.LoginManager.setLoggedIn(false);
+                                startActivity(new Intent(FeedActivity.this, LoginActivity.class));
                             }
                         }).create().show();
                 return true;

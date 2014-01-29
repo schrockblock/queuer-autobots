@@ -12,6 +12,9 @@ import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
+import android.view.Menu;
 
 import com.autobots.queuer.R;
 import com.autobots.queuer.adapters.FeedAdapter;
@@ -25,11 +28,13 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**
- * Created by Moseph on 1/20/14.
+ * Created by mammothbane on 1/17/14.
  */
 public class ProjectActivity extends ActionBarActivity {
 
     private ProjectAdapter adapter;
+
+        //return super.onCreateOptionsMenu(menu);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,10 +48,6 @@ public class ProjectActivity extends ActionBarActivity {
         getActionBar().setTitle(project.getName());
         LinearLayout layout = (LinearLayout) findViewById(R.id.project_feed);
         layout.setBackgroundColor(project.getColor());
-
-
-
-
 
         TaskDataSource tds = new TaskDataSource(this);
         try {
@@ -67,6 +68,22 @@ public class ProjectActivity extends ActionBarActivity {
             tView.setVisibility(View.VISIBLE);
         }
 
+        listView.setDismissCallback(new EnhancedListView.OnDismissCallback() {
+            @Override
+            public EnhancedListView.Undoable onDismiss(EnhancedListView listView, final int position) {
+                if(adapter.isEmpty())
+                    return null;
+                final Task task = adapter.getItem(position);
+                adapter.remove(position);
+                adapter.notifyDataSetChanged();
+                return new EnhancedListView.Undoable() {
+                    @Override
+                    public void undo() {
+                        adapter.insert(task, position);
+                    }
+                };
+            }
+        });
 
         //listView.setDismissCallback(new EnhancedListView.OnDismissCallback()) {
 
@@ -80,7 +97,7 @@ public class ProjectActivity extends ActionBarActivity {
             }
         });
 
-        //listView.enableSwipeToDismiss();
+        listView.enableSwipeToDismiss();
         listView.enableRearranging();
 
     }
@@ -101,9 +118,9 @@ public class ProjectActivity extends ActionBarActivity {
 
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_settings:
+            /*case R.id.action_settings:
                 //open settings activity
-                return true;
+                return true;*/
             case R.id.action_logout:
                 new AlertDialog.Builder(this)
                         .setTitle("Logout")
@@ -111,8 +128,8 @@ public class ProjectActivity extends ActionBarActivity {
                         .setNegativeButton(android.R.string.no, null)
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface arg0, int arg1) {
-                                finish();
                                 com.autobots.queuer.managers.LoginManager.setLoggedIn(false);
+                                startActivity(new Intent(ProjectActivity.this, LoginActivity.class));
                             }
                         }).create().show();
                 return true;
