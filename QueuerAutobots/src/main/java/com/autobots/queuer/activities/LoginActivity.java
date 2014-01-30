@@ -67,10 +67,7 @@ public class LoginActivity extends ActionBarActivity implements AuthenticatedCal
         if (success) {
             Toast.makeText(this, "Login succeeded.", Toast.LENGTH_SHORT).show();
             LoginManager.setLoggedIn(true);
-            //finish();
-            startActivity(new Intent(LoginActivity.this, FeedActivity.class));
             finish();
-            startActivity(new Intent(LoginActivity.this, FeedActivity.class));
         }
     }
 
@@ -81,8 +78,8 @@ public class LoginActivity extends ActionBarActivity implements AuthenticatedCal
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         switch (item.getItemId()) {
-            case R.id.action_settings:
-                return true;
+            //case R.id.action_settings:
+            //    return true;
         }
         return super.onOptionsItemSelected(item);
     }
