@@ -66,6 +66,10 @@ public class LoginActivity extends ActionBarActivity implements AuthenticatedCal
         ((TextView)findViewById(R.id.loginSpinner).findViewById(R.id.progress_tv)).setVisibility(View.INVISIBLE);
         if (success) {
             Toast.makeText(this, "Login succeeded.", Toast.LENGTH_SHORT).show();
+            LoginManager.setLoggedIn(true);
+            //finish();
+            startActivity(new Intent(LoginActivity.this, FeedActivity.class));
+            finish();
             startActivity(new Intent(LoginActivity.this, FeedActivity.class));
         }
     }
@@ -81,6 +85,10 @@ public class LoginActivity extends ActionBarActivity implements AuthenticatedCal
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void onBackPressed() {
+        moveTaskToBack(true);
     }
 
 }

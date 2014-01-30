@@ -17,55 +17,155 @@ import android.widget.Toast;
 
 import com.autobots.queuer.R;
 import com.autobots.queuer.adapters.FeedAdapter;
+import com.autobots.queuer.adapters.ProjectAdapter;
+import com.autobots.queuer.databases.ProjectDataSource;
+import com.autobots.queuer.databases.TaskDataSource;
 import com.autobots.queuer.managers.LoginManager;
 import com.autobots.queuer.models.Project;
+import com.autobots.queuer.models.Task;
 import com.autobots.queuer.views.EnhancedListView;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Created by mammothbane on 1/17/14.
  */
 public class FeedActivity extends ActionBarActivity {
     private FeedAdapter adapter;
+
     private Context context;
+    private ArrayList<Project> projects;
+    private ArrayList<Project> emptyProjects = new ArrayList<Project>();
+    private boolean isLast = false;
+    ProjectDataSource pds = new ProjectDataSource(this);
+    TaskDataSource tds = new TaskDataSource(this);
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        context = this;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feed);
+        setTitle("Task Manager");
 
-        ArrayList<Project> projects = new ArrayList<Project>(20);
-        for (int i = 0; i < 20; i++) {
-            projects.add(new Project(i, "Project " + i,Color.CYAN));
+
+
+        try {
+            pds.open();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        projects = pds.getAllProjects();
+        if(projects.isEmpty()){
+            pds.createProject("Project1", Color.CYAN, 0, new Date(1,1,1), new Date(1,1,1) );
+            projects = pds.getAllProjects();
+        }
+        pds.close();
+
+        FeedAdapter fAdapter = new FeedAdapter(this,projects);
+
+        if(!fAdapter.isEmpty()){
+
+            try {
+                tds.open(); // App crashes here.
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            ArrayList<Task> tasks = tds.getProjectTasks(fAdapter.getItemId(0));
+            tds.close();
+            ProjectAdapter pAdapter = new ProjectAdapter(this, tasks);
+            if(pAdapter.isEmpty()){
+
+                try {
+                    tds.open();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                Task taskOne = tds.createTask("Task1", fAdapter.getItemId(0),0,0, false );
+                Task taskTwo = tds.createTask("Task2", fAdapter.getItemId(0),1,1, false );
+                tasks = tds.getProjectTasks(fAdapter.getItemId(0));
+                tds.close();
+
+            }
+            try {
+                tds.open();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            tasks = tds.getProjectTasks(fAdapter.getItemId(0));
+            tds.close();
+            fAdapter.getItem(0).setTaskList(tasks);
+
         }
 
-        EnhancedListView listView = (EnhancedListView)findViewById(R.id.lv_projects);
+
+        for(int k = 0; k < projects.size(); k++){
+            if(!projects.get(k).hasTasks()){
+                emptyProjects.add(projects.get(k));
+                projects.remove(k);
+                k--;
+            }
+        }
+
+        if(projects.size() != 0) findViewById(R.id.msg_noProjects).setVisibility(View.GONE);
+
+        final EnhancedListView listView = (EnhancedListView)findViewById(R.id.lv_projects);
         adapter = new FeedAdapter(this, projects);
         listView.setAdapter(adapter);
 
-        //listView.setDismissCallback(new EnhancedListView.OnDismissCallback()) {
-
-
-        //}
+        listView.setDismissCallback(new EnhancedListView.OnDismissCallback() {
+            @Override
+            public EnhancedListView.Undoable onDismiss(EnhancedListView listView, final int position) {
+                //if(!adapter.getItem(position).hasTasks())
+                //    return null;
+                final Task task = adapter.getItem(position).getTaskList().get(0);
+                adapter.getItem(position).getTaskList().remove(0);
+                if(!adapter.getItem(position).hasTasks()) isLast = true;  //if the project has no more tasks, set isLast to true
+                adapter.notifyDataSetChanged();
+                checkForEmpty(position);
+                return new EnhancedListView.Undoable() {
+                    @Override
+                    public void undo() {
+                        if(getIsLast()){ //if the project was empty, move it from emptyProjects to projects in the same position as previously
+                            projects.add(position,emptyProjects.get(emptyProjects.size()-1));
+                            emptyProjects.remove(emptyProjects.size()-1);
+                            adapter.notifyDataSetChanged();
+                            findViewById(R.id.msg_noProjects).setVisibility(View.GONE);
+                        }
+                        adapter.getItem(position).getTaskList().add(0, task);
+                    }
+                };
+            }
+        });
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
 
-                Project projectClicked = adapter.getItem(i);
-                Intent intent = new Intent(context, ProjectActivity.class);
-                intent.putExtra("EXTRA_PROJECT", projectClicked);
+
+                Intent intent = new Intent(FeedActivity.this, ProjectActivity.class);
+                intent.putExtra("PROJECT", adapter.getItem(position));
+                //intent.putExtra("ADAPTER", )
                 startActivity(intent);
 
                 //Toast.makeText(FeedActivity.this, "Clicked on item " + adapter.getItem(i), Toast.LENGTH_SHORT).show();
             }
         });
 
-        //listView.enableSwipeToDismiss();
+        listView.enableSwipeToDismiss();
         listView.enableRearranging();
 
+
+    }
+
+    @Override
+    public void onResume() {
+        if (!LoginManager.isLoggedIn()) {
+            startActivity(new Intent(FeedActivity.this, LoginActivity.class));
+        }
+
+        super.onResume();
     }
 
     @Override
@@ -93,9 +193,9 @@ public class FeedActivity extends ActionBarActivity {
 
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_settings:
+            /*case R.id.action_settings:
                 //open settings activity
-                return true;
+                return true;*/
             case R.id.action_logout:
                 new AlertDialog.Builder(this)
                         .setTitle("Logout")
@@ -103,8 +203,8 @@ public class FeedActivity extends ActionBarActivity {
                         .setNegativeButton(android.R.string.no, null)
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface arg0, int arg1) {
-                                finish();
                                 com.autobots.queuer.managers.LoginManager.setLoggedIn(false);
+                                startActivity(new Intent(FeedActivity.this, LoginActivity.class));
                             }
                         }).create().show();
                 return true;
@@ -112,6 +212,18 @@ public class FeedActivity extends ActionBarActivity {
                 return super.onOptionsItemSelected(item);
         }
 
+    }
+
+    public void checkForEmpty(int pos){
+        if(!projects.get(pos).hasTasks()){
+           emptyProjects.add(projects.get(pos));
+           projects.remove(pos);
+        }
+        if(projects.size() == 0) findViewById(R.id.msg_noProjects).setVisibility(View.VISIBLE);
+    }
+
+    public boolean getIsLast(){
+        return isLast;
     }
 
 }

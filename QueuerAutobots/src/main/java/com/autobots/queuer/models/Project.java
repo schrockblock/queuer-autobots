@@ -1,25 +1,44 @@
 package com.autobots.queuer.models;
 
-import android.support.v7.appcompat.R;
+import android.content.Context;
+
+import com.autobots.queuer.databases.ProjectDataSource;
 
 import java.io.Serializable;
-import java.security.PrivateKey;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Created by mammothbane on 1/17/14.
  */
 public class Project implements Serializable {
     private int id;
-    private String title;
+    private int localId;
+    private String name;
     private int color;
     private ArrayList<Task> tasks;
 
-    public Project(int id, String title, int color) {
+    public Project(Context context, int id, String name) throws SQLException {
         this.id = id;
-        this.title = title;
-        this.color = color;
-        tasks = new ArrayList<Task>(20);
+        this.name = name;
+
+        ProjectDataSource projectDataSource = new ProjectDataSource(context);
+        projectDataSource.open();
+        localId = projectDataSource.createProject(name, 0, id, new Date(), new Date()).localId;
+        projectDataSource.close();
+    }
+
+    public Project(){
+
+    }
+
+    public int getLocalId() {
+        return localId;
+    }
+
+    public void setLocalId(int localId) {
+        this.localId = localId;
     }
 
     public int getId() {
@@ -30,23 +49,28 @@ public class Project implements Serializable {
         this.id = id;
     }
 
-    public String getTitle() {
-        return title;
+    public String getName() {
+        return name;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public int getColor() {
         return color;
     }
 
-    public boolean hasTasks(){ return !tasks.isEmpty();}
-
-    public ArrayList<Task> getTaskList() { return tasks;}
-
     public void setColor(int color) {
         this.color = color;
     }
+
+    public boolean hasTasks() { return !tasks.isEmpty();}
+
+    public ArrayList<Task> getTaskList() { return tasks; }
+
+    public void setTaskList(ArrayList<Task> tasks) { this.tasks = tasks;}
+
+
+
 }
