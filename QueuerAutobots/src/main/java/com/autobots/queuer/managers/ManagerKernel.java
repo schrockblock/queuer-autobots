@@ -1,6 +1,7 @@
 package com.autobots.queuer.managers;
 
 import android.content.Context;
+import android.widget.CheckBox;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -9,6 +10,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.autobots.queuer.Constants;
 import com.autobots.queuer.QueuerApplication;
+import com.autobots.queuer.R;
 import com.autobots.queuer.interfaces.AuthenticatedCallback;
 import com.autobots.queuer.models.SignInModel;
 import com.google.gson.Gson;
@@ -20,12 +22,19 @@ import org.json.JSONObject;
  * Created by mammothbane on 1/17/14.
  */
 public class ManagerKernel {
+
     private AuthenticatedCallback callback;
     private Context context;
     private boolean create;
+    private boolean debug;
 
     public ManagerKernel(boolean create) {
         this.create = create;
+    }
+
+    public ManagerKernel(boolean create, boolean debug) {
+        this.create = create;
+        this.debug = debug;
     }
 
     protected void setCallback(Context context, AuthenticatedCallback callback) {
@@ -35,7 +44,11 @@ public class ManagerKernel {
     }
 
     protected void accAuth (String username, String password) throws Exception {
-        if (context == null) throw new Exception("you must supply a context/use setcallback");
+       if (context == null) throw new Exception("you must supply a context/use setcallback");
+       if (debug) {
+           authResult(true, callback);
+           return;
+       }
        String URL;
        if (create) { URL = Constants.URL_VOLLEY_ACCT; }
        else { URL = Constants.URL_VOLLEY_SESSION; }
@@ -118,6 +131,9 @@ public class ManagerKernel {
         callback.finishedConnection(success);
     }
 
+    public void setDebug(boolean debug) {
+        this.debug = debug;
+    }
 
 
 }

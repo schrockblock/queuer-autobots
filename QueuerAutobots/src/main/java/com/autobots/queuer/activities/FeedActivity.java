@@ -38,7 +38,8 @@ public class FeedActivity extends ActionBarActivity {
     private Context context;
     private ArrayList<Project> projects;
     private ArrayList<Project> emptyProjects = new ArrayList<Project>();
-    private boolean isLast = false;
+    private ArrayList<Task> tasks;
+    private boolean isLast = false; //TODO: fix this, please. we're working on the whole feedActivity, not one project
     ProjectDataSource pds = new ProjectDataSource(this);
     TaskDataSource tds = new TaskDataSource(this);
 
@@ -46,10 +47,8 @@ public class FeedActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_feed);
+        this.setContentView(R.layout.activity_feed);
         setTitle("Task Manager");
-
-
 
         try {
             pds.open();
@@ -63,42 +62,76 @@ public class FeedActivity extends ActionBarActivity {
         }
         pds.close();
 
-        FeedAdapter fAdapter = new FeedAdapter(this,projects);
-
-        if(!fAdapter.isEmpty()){
-
+        for (int i = 0; i < projects.size(); i++) {
+            ProjectAdapter pAdapter = new ProjectAdapter(FeedActivity.this, null);
             try {
-                tds.open(); // App crashes here.
+                tds.open();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-            ArrayList<Task> tasks = tds.getProjectTasks(fAdapter.getItemId(0));
+            tasks = tds.getProjectTasks(adapter.getItemId(i));
             tds.close();
-            ProjectAdapter pAdapter = new ProjectAdapter(this, tasks);
-            if(pAdapter.isEmpty()){
+            adapter.getItem(i).setTaskList(tasks);
+
+            if(pAdapter.isEmpty()) {
 
                 try {
                     tds.open();
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
-                Task taskOne = tds.createTask("Task1", fAdapter.getItemId(0),0,0, false );
-                Task taskTwo = tds.createTask("Task2", fAdapter.getItemId(0),1,1, false );
-                tasks = tds.getProjectTasks(fAdapter.getItemId(0));
+                Task taskOne = tds.createTask("Task1", adapter.getItemId(i),0,0, false );
+                Task taskTwo = tds.createTask("Task2", adapter.getItemId(i),1,1, false );
                 tds.close();
-
             }
-            try {
-                tds.open();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-            tasks = tds.getProjectTasks(fAdapter.getItemId(0));
-            tds.close();
-            fAdapter.getItem(0).setTaskList(tasks);
+        }
+        adapter = FeedAdapter.getFeedAdapter(this, projects);
 
+    }
+
+    @Override
+    public void onResume() {
+        if (!LoginManager.isLoggedIn()) {
+            startActivity(new Intent(FeedActivity.this, LoginActivity.class));
         }
 
+
+        try {
+            pds.open();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        projects = pds.getAllProjects();
+        pds.close();
+        //projects.get(0).setTaskList(tasks);
+
+
+
+        if(projects.size() != 0) findViewById(R.id.msg_noProjects).setVisibility(View.GONE);
+
+        try {
+            tds.open();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        tds.close();
+
+        for (int i = 0; i < projects.size(); i++) {
+            if(!adapter.isEmpty()){
+
+                try {
+                    tds.open(); // App crashes here.
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                tasks = tds.getProjectTasks(adapter.getItemId(0));
+                tds.close();
+
+                adapter.getItem(0).setTaskList(tasks);
+
+            }
+        }
 
         for(int k = 0; k < projects.size(); k++){
             if(!projects.get(k).hasTasks()){
@@ -108,10 +141,8 @@ public class FeedActivity extends ActionBarActivity {
             }
         }
 
-        if(projects.size() != 0) findViewById(R.id.msg_noProjects).setVisibility(View.GONE);
-
         final EnhancedListView listView = (EnhancedListView)findViewById(R.id.lv_projects);
-        adapter = new FeedAdapter(this, projects);
+        //adapter = new FeedAdapter(this, projects);
         listView.setAdapter(adapter);
 
         listView.setDismissCallback(new EnhancedListView.OnDismissCallback() {
@@ -121,19 +152,33 @@ public class FeedActivity extends ActionBarActivity {
                 //    return null;
                 final Task task = adapter.getItem(position).getTaskList().get(0);
                 adapter.getItem(position).getTaskList().remove(0);
-                if(!adapter.getItem(position).hasTasks()) isLast = true;  //if the project has no more tasks, set isLast to true
+                if(!adapter.getItem(position).hasTasks()) isLast = true;  //if the project has no more tasks, set isLast to true //TODO: this doesn't make any sense. we're working on FeedActivity.
                 adapter.notifyDataSetChanged();
+                try {
+                    tds.open();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                tds.deleteTask(task);
+                tds.close();
                 checkForEmpty(position);
                 return new EnhancedListView.Undoable() {
                     @Override
                     public void undo() {
                         if(getIsLast()){ //if the project was empty, move it from emptyProjects to projects in the same position as previously
                             projects.add(position,emptyProjects.get(emptyProjects.size()-1));
-                            emptyProjects.remove(emptyProjects.size()-1);
-                            adapter.notifyDataSetChanged();
+                            emptyProjects.remove(emptyProjects.size() - 1);
                             findViewById(R.id.msg_noProjects).setVisibility(View.GONE);
+                            try {
+                                tds.open();
+                            } catch (SQLException e) {
+                                e.printStackTrace();
+                            }
+                            tds.createTask(task.getName(), task.getProjectId(), task.getId(), position, task.isComplete());
+                            tds.close();
+                            adapter.notifyDataSetChanged();
+                            adapter.getItem(position).getTaskList().add(0, task);
                         }
-                        adapter.getItem(position).getTaskList().add(0, task);
                     }
                 };
             }
@@ -156,15 +201,7 @@ public class FeedActivity extends ActionBarActivity {
         listView.enableSwipeToDismiss();
         listView.enableRearranging();
 
-
-    }
-
-    @Override
-    public void onResume() {
-        if (!LoginManager.isLoggedIn()) {
-            startActivity(new Intent(FeedActivity.this, LoginActivity.class));
-        }
-
+        adapter.notifyDataSetChanged();
         super.onResume();
     }
 
@@ -215,11 +252,15 @@ public class FeedActivity extends ActionBarActivity {
     }
 
     public void checkForEmpty(int pos){
+        if(projects.size() == 0) {
+            findViewById(R.id.msg_noProjects).setVisibility(View.VISIBLE);
+            return;
+        }
         if(!projects.get(pos).hasTasks()){
            emptyProjects.add(projects.get(pos));
            projects.remove(pos);
         }
-        if(projects.size() == 0) findViewById(R.id.msg_noProjects).setVisibility(View.VISIBLE);
+
     }
 
     public boolean getIsLast(){

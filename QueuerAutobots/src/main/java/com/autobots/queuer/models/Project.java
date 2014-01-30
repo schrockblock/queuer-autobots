@@ -65,7 +65,11 @@ public class Project implements Serializable {
         this.color = color;
     }
 
-    public boolean hasTasks() { return !tasks.isEmpty();}
+    public boolean hasTasks() {
+        //System.out.println(tasks.isEmpty());
+        if (tasks == null) return false;
+        return !tasks.isEmpty();
+    }
 
     public ArrayList<Task> getTaskList() { return tasks; }
 

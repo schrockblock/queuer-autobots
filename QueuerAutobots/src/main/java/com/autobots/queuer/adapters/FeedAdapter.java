@@ -20,10 +20,29 @@ import java.util.ArrayList;
  */
 public class FeedAdapter extends BaseAdapter implements RearrangementListener {
     private Context context;
-    private ArrayList<Project> projects = new ArrayList<Project>();
+    private ArrayList<Project> projects = new ArrayList<Project>(10);
+    private static FeedAdapter ref = new FeedAdapter(null, null);
 
-    public FeedAdapter(Context context, ArrayList<Project> projects) {
+    private FeedAdapter(Context context, ArrayList<Project> projects) {
         this.context = context;
+        this.projects = projects;
+    }
+
+    public static FeedAdapter getFeedAdapter() {
+        return ref;
+    }
+
+    public static FeedAdapter getFeedAdapter(Context context, ArrayList<Project> projects) {
+        ref.setProjects(projects);
+        ref.setContext(context);
+        return ref;
+    }
+
+    private void setContext(Context context) {
+        this.context = context;
+    }
+
+    private void setProjects(ArrayList<Project> projects) {
         this.projects = projects;
     }
 

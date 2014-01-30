@@ -1,5 +1,6 @@
 package com.autobots.queuer.activities;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
@@ -13,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.os.Build;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -22,6 +24,7 @@ import android.widget.Toast;
 import com.autobots.queuer.R;
 import com.autobots.queuer.interfaces.AuthenticatedCallback;
 import com.autobots.queuer.managers.LoginManager;
+import com.autobots.queuer.managers.ManagerKernel;
 
 public class LoginActivity extends ActionBarActivity implements AuthenticatedCallback {
 
@@ -35,6 +38,12 @@ public class LoginActivity extends ActionBarActivity implements AuthenticatedCal
         final EditText user = (EditText)findViewById(R.id.login_et).findViewById(R.id.username);
         final EditText password = (EditText)findViewById(R.id.login_et).findViewById(R.id.password);
         final LoginManager manager = LoginManager.getLoginManager();
+        final CheckBox checkbox = (CheckBox)findViewById(R.id.debug_box);
+        checkbox.setOnClickListener(new View.OnClickListener() {
+           public void onClick(View view) {
+               LoginManager.getLoginManager().setDebug(checkbox.isChecked());
+           }
+        });
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -87,5 +96,6 @@ public class LoginActivity extends ActionBarActivity implements AuthenticatedCal
     public void onBackPressed() {
         moveTaskToBack(true);
     }
+
 
 }

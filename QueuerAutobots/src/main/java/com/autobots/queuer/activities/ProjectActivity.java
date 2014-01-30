@@ -1,8 +1,12 @@
 package com.autobots.queuer.activities;
 
+import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
@@ -33,32 +37,44 @@ import java.util.ArrayList;
 public class ProjectActivity extends ActionBarActivity {
 
     private ProjectAdapter adapter;
+    final TaskDataSource tds = new TaskDataSource(this);
+    private ArrayList<Task> tasks = new ArrayList<Task>(10);
+    private LinearLayout layout;
+    private Project project;
+    private int projectId;
+    private EnhancedListView listView;
+    private TextView tView;
 
-        //return super.onCreateOptionsMenu(menu);
-
+    @SuppressLint("NewApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.project_feed);
-        TextView tView = (TextView) findViewById(R.id.no_tasks);
+        ((Activity)this).setContentView(R.layout.project_feed);
+        project = (Project) getIntent().getSerializableExtra("PROJECT");
+        projectId = project.getId();
+        getActionBar().setTitle(project.getName());
+        layout = (LinearLayout) findViewById(R.id.project_feed);
+
+
+
+    }
+
+    protected void onResume() {
+
+
+        layout.setBackgroundColor(project.getColor());
+        tView = (TextView) findViewById(R.id.no_tasks);
         tView.setVisibility(View.GONE);
 
-        Project project = (Project) getIntent().getSerializableExtra("PROJECT");
-        int projectId = project.getId();
-        getActionBar().setTitle(project.getName());
-        LinearLayout layout = (LinearLayout) findViewById(R.id.project_feed);
-        layout.setBackgroundColor(project.getColor());
-
-        TaskDataSource tds = new TaskDataSource(this);
         try {
             tds.open();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        ArrayList<Task> tasks = tds.getProjectTasks(projectId);
+        tasks = tds.getProjectTasks(projectId);
         tds.close();
 
-        EnhancedListView listView = (EnhancedListView)findViewById(R.id.lv_tasks);
+        listView = (EnhancedListView)findViewById(R.id.lv_tasks);
         adapter = new ProjectAdapter(this, tasks);
         listView.setAdapter(adapter);
 
@@ -76,19 +92,31 @@ public class ProjectActivity extends ActionBarActivity {
                 final Task task = adapter.getItem(position);
                 adapter.remove(position);
                 adapter.notifyDataSetChanged();
+                try {
+                    tds.open();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                tds.deleteTask(task);
+                tds.close();
+                FeedAdapter.getFeedAdapter().notifyDataSetChanged();
                 return new EnhancedListView.Undoable() {
                     @Override
                     public void undo() {
+                        try {
+                            tds.open();
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                        }
+                        tds.createTask(task.getName(), task.getProjectId(), task.getId(), position, task.isComplete());
+                        tds.close();
                         adapter.insert(task, position);
+                        adapter.notifyDataSetChanged();
+                        FeedAdapter.getFeedAdapter().notifyDataSetChanged();
                     }
                 };
             }
         });
-
-        //listView.setDismissCallback(new EnhancedListView.OnDismissCallback()) {
-
-
-        //}
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -100,6 +128,7 @@ public class ProjectActivity extends ActionBarActivity {
         listView.enableSwipeToDismiss();
         listView.enableRearranging();
 
+        super.onResume();
     }
 
     @Override

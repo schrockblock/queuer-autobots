@@ -55,6 +55,7 @@ public class ProjectAdapter extends BaseAdapter implements RearrangementListener
 
     @Override
     public boolean isEmpty(){
+        if (tasks == null) return true;
         return tasks.isEmpty();
     }
 

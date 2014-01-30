@@ -41,4 +41,8 @@ public class LoginManager {
         loggedIn = login;
     }
 
+    public void setDebug(boolean debug) {
+        kernel.setDebug(debug);
+    }
+
 }
